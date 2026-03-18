@@ -1,0 +1,24 @@
+{
+  "name": "fsdh-pfds-docs-write",
+  "description": "FSDH Code Contributors to the fsdh-pfds-docs repo",
+  "privacy": "closed",
+  "notification_setting": "notifications_enabled",
+  "members": [
+    {
+      "username": "Sean-Stilwell",
+      "role": "member"
+    },
+    {
+      "username": "siovan-ssc",
+      "role": "member"
+    }
+  ],
+  "repositories": [
+    {
+      "name": "fsdh-pfds-docs",
+      "permissions": "push"
+    }
+  ]
+}
+
+
