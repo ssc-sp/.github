@@ -1,0 +1,158 @@
+name: Manage Organization Members
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # Runs daily at 1:00 UTC
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "org-membership/members.json"
+
+permissions: read-all
+
+jobs:
+  manage-members:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create App token
+        id: create_token
+        uses: ssc-sp/.github/.github/actions/create-app-token@main
+        with:
+          app-id: ${{ vars.ORG_MEMBER_TEAM_ADMIN_ID }}
+          private-key: ${{ secrets.ORG_MEMBER_TEAM_ADMIN_KEY }}
+
+      - name: Set up GitHub CLI
+        run: |
+          gh auth login --with-token <<< "${{ steps.create_token.outputs.token }}"
+
+      - name: Checkout Repository
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
+
+      - name: Clear Failed Invitations
+        run: |
+          # Fetch failed invitations
+          failed_invitations=$(curl -L \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ steps.create_token.outputs.token }}" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/orgs/${{ github.repository_owner }}/failed_invitations")
+
+          # Parse and cancel each failed invitation
+          echo "$failed_invitations" | jq -c '.[]' | while read -r invite; do
+            invite_id=$(echo "$invite" | jq -r '.id')
+            email=$(echo "$invite" | jq -r '.email')
+            failed_reason=$(echo "$invite" | jq -r '.failed_reason')
+
+            if [[ -n "$failed_reason" ]]; then
+              echo "Invitation for $email failed due to: $failed_reason"
+            else
+              echo "Invitation for $email failed, but no reason provided."
+            fi
+
+            cancel_response=$(curl -L -X DELETE \
+              -H "Accept: application/vnd.github+json" \
+              -H "Authorization: Bearer ${{ steps.create_token.outputs.token }}" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "https://api.github.com/orgs/${{ github.repository_owner }}/invitations/$invite_id" \
+              -w "%{http_code}" -s)
+
+            http_code=$(echo "$cancel_response" | tail -n1)
+
+            if [[ "$http_code" == "204" ]]; then
+              echo "Successfully cancelled invitation for $email with ID $invite_id."
+            else
+              echo "Failed to cancel invitation for $email with ID $invite_id. Response: $cancel_response"
+            fi
+          done
+
+      - name: Set organization membership
+        run: |
+          ORG="${{ github.repository_owner }}"
+          TOKEN="${{ steps.create_token.outputs.token }}"
+          ALLOWED_DOMAINS=("ssc-spc.gc.ca" "ssc.gc.ca")
+          MEMBERS_FILE="org-membership/members.json"
+
+          # Build list of usernames to process (skip nonremovable & inactive)
+          mapfile -t to_process < <(
+            jq -r '.members[]
+              | select(.status!="nonremovable" and .status!="inactive")
+              | .username' "$MEMBERS_FILE"
+          )
+          echo "Users to process: ${to_process[*]}"
+
+          for username in "${to_process[@]}"; do
+            email=$(jq -r --arg u "$username" '.members[]
+                      | select(.username==$u)
+                      | .email' "$MEMBERS_FILE")
+            desired_role=$(jq -r --arg u "$username" '.members[]
+                      | select(.username==$u)
+                      | .role' "$MEMBERS_FILE")
+
+            # Extract domain from email
+            email_domain="${email##*@}"
+
+            # Skip if domain not allowed
+            if ! printf '%s\n' "${ALLOWED_DOMAINS[@]}" | grep -Fxq "$email_domain"; then
+              echo "Skipping $username: email domain not allowed"
+              continue
+            fi
+
+            echo "Processing $username with desired role: $desired_role"
+
+            # Check membership status
+            resp=$(curl -sL -w "\n%{http_code}" \
+              -H "Authorization: Bearer $TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/orgs/$ORG/memberships/$username")
+            resp_code=$(tail -n1 <<<"$resp")
+            resp_body=$(sed '$d' <<<"$resp")
+
+            if [[ "$resp_code" == "404" ]]; then
+              echo "Inviting $username"
+              gh api \
+                --method POST \
+                --raw-field email="${email}" \
+                --raw-field role="${desired_role}" \
+                "/orgs/${ORG}/invitations"
+
+            elif [[ "$resp_code" == "200" ]]; then
+              mapped_role=$([[ "$desired_role" == "direct_member" ]] && echo "member" || echo "$desired_role")
+              current_role=$(jq -r '.role' <<<"$resp_body")
+              if [[ "$current_role" != "$mapped_role" ]]; then
+                echo "Updating $username: $current_role -> $mapped_role"
+                gh api \
+                  --method PUT \
+                  --raw-field role="${mapped_role}" \
+                  "/orgs/${ORG}/memberships/${username}"
+              else
+                echo "$username already has role $current_role"
+              fi
+            else
+              echo "Unexpected HTTP $resp_code for $username"
+            fi
+          done
+
+      - name: Remove inactive members
+        run: |
+          ORG="${{ github.repository_owner }}"
+          MEMBERS_FILE="org-membership/members.json"
+
+          # Identify inactive users
+          mapfile -t inactive_users < <(
+            jq -r '.members[]
+              | select(.status=="inactive")
+              | .username' "$MEMBERS_FILE"
+          )
+          echo "Inactive members to consider for removal: ${inactive_users[*]}"
+
+          for username in "${inactive_users[@]}"; do
+            # Check if the user is actually a member before attempting removal
+            if gh api --method GET "/orgs/${ORG}/memberships/${username}" >/dev/null 2>&1; then
+              echo "Removing $username from organization"
+              #gh api --method DELETE "/orgs/${ORG}/members/${username}"
+
+            fi
+          done
