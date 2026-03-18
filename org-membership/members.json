@@ -65,6 +65,12 @@
       "email": "sean.stilwell@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active"
+    },
+    {
+      "username": "wendychee",
+      "email": "Wendy.Chee@ssc-spc.gc.ca",
+      "role": "direct_member",
+      "status": "active"
     }
   ]
 }
