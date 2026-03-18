@@ -1,6 +1,6 @@
 {
-  "name": "datahub-docs-write",
-  "description": "FSDH Code Contributors to the datahub-docs repo",
+  "name": "datahub-portal-write",
+  "description": "FSDH Code Contributors to the datahub-portal repo",
   "privacy": "closed",
   "notification_setting": "notifications_enabled",
   "members": [
@@ -15,11 +15,15 @@
     {
       "username": "siovan-ssc",
       "role": "member"
+    },
+    {
+      "username": "ErikApption",
+      "role": "member"
     }
   ],
   "repositories": [
     {
-      "name": "datahub-docs",
+      "name": "datahub-portal",
       "permissions": "push"
     }
   ]
