@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - "org-team-configs/*.json"
+      - "team-membership/*.json"
 
 permissions:
   contents: read
@@ -37,8 +37,8 @@ jobs:
         run: |
           set -euo pipefail
 
-          # Find all JSON files in org-team-configs (including hidden files)
-          mapfile -t team_files < <(find ./org-team-configs -maxdepth 1 -type f -name "*.json")
+          # Find all JSON files in team-membership (including hidden files)
+          mapfile -t team_files < <(find ./team-membership -maxdepth 1 -type f -name "*.json")
           if [ ${#team_files[@]} -eq 0 ]; then
             echo "No team configuration files found. Exiting."
             exit 0
@@ -99,7 +99,7 @@ jobs:
 
           # Remove teams that no longer have a corresponding config file
           for team_slug in "${existing_teams[@]}"; do
-            if ! find ./org-team-configs -maxdepth 1 -type f -name "${team_slug}.json" | grep -q .; then
+            if ! find ./team-membership -maxdepth 1 -type f -name "${team_slug}.json" | grep -q .; then
               echo "[DELETE] Team: ${team_slug}"
               gh api --method DELETE \
                 -H "Accept: application/vnd.github+json" \
@@ -113,7 +113,7 @@ jobs:
           set -euo pipefail
 
           # Get all team configuration files (including hidden files)
-          mapfile -t team_files < <(find ./org-team-configs -maxdepth 1 -type f -name "*.json")
+          mapfile -t team_files < <(find ./team-membership -maxdepth 1 -type f -name "*.json")
 
           for team_file in "${team_files[@]}"; do
             echo "Processing team config: $team_file"
@@ -162,7 +162,7 @@ jobs:
           set -euo pipefail
 
           # Get all team configuration files (including hidden ones)
-          mapfile -t team_files < <(find ./org-team-configs -maxdepth 1 -type f -name "*.json")
+          mapfile -t team_files < <(find ./team-membership -maxdepth 1 -type f -name "*.json")
 
           for team_file in "${team_files[@]}"; do
             echo "Processing team config: $team_file"
