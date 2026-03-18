@@ -1,0 +1,17 @@
+{
+  "name": "github-write",
+  "description": "Code Contributors to the github-org repo, this repo manages all the other repo's in the org",
+  "privacy": "closed",
+  "notification_setting": "notifications_enabled",
+  "members": [
+    { "username": "KingBain", "role": "member" },
+    { "username": "skaza999", "role": "member" },
+    { "username": "simon-wang-gc", "role": "member" }
+  ],
+  "repositories": [
+    {
+      "name": ".github",
+      "permissions": "push"
+    }
+  ]
+}
