@@ -45,11 +45,11 @@
           {
             "minimum_approvals": 1,
             "file_patterns": [
-              "/UserGuide/POC-Terms-And-Conditions.md",
-              "/fr/UserGuide/Conditions-générales-de-POC.md"
+              "/src/en/Terms-And-Conditions.md",
+              "/src/fr/Conditions-generales.md"
             ],
             "reviewer": {
-              "id": 16733900,
+              "id": 16734124,
               "type": "Team"
             }
           }
