@@ -1,0 +1,26 @@
+{
+  "name": "status-statut-write",
+  "description": "FSDH Code Contributors to the status-statut repo",
+  "privacy": "closed",
+  "notification_setting": "notifications_enabled",
+  "members": [
+    {
+      "username": "KingBain",
+      "role": "member"
+    },
+    {
+      "username": "Sean-Stilwell",
+      "role": "member"
+    },
+    {
+      "username": "simon-wang-gc",
+      "role": "member"
+    }
+  ],
+  "repositories": [
+    {
+      "name": "status-statut",
+      "permissions": "push"
+    }
+  ]
+}
