@@ -1,6 +1,6 @@
 {
-  "name": "datahub-docs-tc-approver-read",
-  "description": "FSDH terms and conditions approver in the datahub-docs repo",
+  "name": "fsdh-pfds-docs-tc-approver-read",
+  "description": "FSDH terms and conditions approver in the fsdh-pfds-docs repo",
   "privacy": "closed",
   "notification_setting": "notifications_enabled",
   "members": [
@@ -11,7 +11,7 @@
   ],
   "repositories": [
     {
-      "name": "datahub-docs",
+      "name": "fsdh-pfds-docs",
       "permissions": "pull"
     }
   ]
