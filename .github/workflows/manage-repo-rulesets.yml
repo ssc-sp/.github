@@ -93,8 +93,8 @@ jobs:
 
               if [ "$found_file" = false ]; then
                 echo "Deleting obsolete ruleset '$n' (ID: $id_to_delete) in $repo"
-                # gh api "repos/${{ github.repository_owner }}/$repo/rulesets/$id_to_delete" \
-                #  --method DELETE
+                gh api "repos/${{ github.repository_owner }}/$repo/rulesets/$id_to_delete" \
+                  --method DELETE
               fi
             done
 
