@@ -23,6 +23,7 @@ jobs:
         with:
           app-id: ${{ vars.ORG_MEMBER_TEAM_ADMIN_ID }}
           private-key: ${{ secrets.ORG_MEMBER_TEAM_ADMIN_KEY }}
+          owner: ${{ github.repository_owner }}
 
       - name: Set up GitHub CLI
         run: |
