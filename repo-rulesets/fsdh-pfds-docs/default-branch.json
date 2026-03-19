@@ -1,0 +1,73 @@
+{
+  "name": "default-branch",
+  "target": "branch",
+  "source_type": "Repository",
+  "enforcement": "active",
+  "conditions": {
+    "ref_name": {
+      "exclude": [],
+      "include": [
+        "~DEFAULT_BRANCH"
+      ]
+    }
+  },
+  "rules": [
+    {
+      "type": "deletion"
+    },
+    {
+      "type": "non_fast_forward"
+    },
+    {
+      "type": "code_scanning",
+      "parameters": {
+        "code_scanning_tools": [
+          {
+            "tool": "CodeQL",
+            "security_alerts_threshold": "high_or_higher",
+            "alerts_threshold": "errors"
+          }
+        ]
+      }
+    },
+    {
+      "type": "code_quality",
+      "parameters": {
+        "severity": "errors"
+      }
+    },
+    {
+      "type": "pull_request",
+      "parameters": {
+        "required_approving_review_count": 1,
+        "dismiss_stale_reviews_on_push": false,
+        "required_reviewers": [
+          {
+            "minimum_approvals": 1,
+            "file_patterns": [
+              "/src/en/Terms-And-Conditions.md",
+              "/src/fr/Conditions-generales.md"
+            ],
+            "reviewer": {
+              "id": 16734124,
+              "type": "Team"
+            }
+          }
+        ],
+        "require_code_owner_review": false,
+        "require_last_push_approval": true,
+        "required_review_thread_resolution": false,
+        "allowed_merge_methods": [
+          "squash"
+        ]
+      }
+    }
+  ],
+  "bypass_actors": [
+    {
+      "actor_id": null,
+      "actor_type": "OrganizationAdmin",
+      "bypass_mode": "always"
+    }
+  ]
+}
