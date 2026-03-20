@@ -75,11 +75,6 @@
       "actor_id": null,
       "actor_type": "OrganizationAdmin",
       "bypass_mode": "always"
-    },
-    {
-      "actor_id": 1093157,
-      "actor_type": "Integration",
-      "bypass_mode": "always"
     }
   ]
 }
