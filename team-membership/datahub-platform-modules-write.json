@@ -1,0 +1,22 @@
+{
+  "name": "datahub-platform-modules-write",
+  "description": "FSDH Code Contributors to the datahub-platform-modules repo",
+  "privacy": "closed",
+  "notification_setting": "notifications_enabled",
+  "members": [
+    {
+      "username": "KingBain",
+      "role": "member"
+    },
+    {
+      "username": "simon-wang-gc",
+      "role": "member"
+    }
+  ],
+  "repositories": [
+    {
+      "name": "datahub-platform-modules",
+      "permissions": "push"
+    }
+  ]
+}
