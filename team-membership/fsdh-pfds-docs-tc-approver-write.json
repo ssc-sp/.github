@@ -1,5 +1,5 @@
 {
-  "name": "fsdh-pfds-docs-tc-approver-read",
+  "name": "fsdh-pfds-docs-tc-approver-write",
   "description": "FSDH terms and conditions approver in the fsdh-pfds-docs repo",
   "privacy": "closed",
   "notification_setting": "notifications_enabled",
@@ -12,7 +12,7 @@
   "repositories": [
     {
       "name": "fsdh-pfds-docs",
-      "permissions": "pull"
+      "permissions": "push"
     }
   ]
 }
