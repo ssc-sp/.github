@@ -45,11 +45,11 @@
           {
             "minimum_approvals": 1,
             "file_patterns": [
-              "/src/en/Terms-And-Conditions.md",
-              "/src/fr/Conditions-generales.md"
+              "/docs/en/Terms-And-Conditions.md",
+              "/docs/fr/Conditions-generales.md"
             ],
             "reviewer": {
-              "id": 16734124,
+              "id": 17054111,
               "type": "Team"
             }
           }
