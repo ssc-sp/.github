@@ -32,48 +32,76 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
 
-      - name: Collect Request Files and Build Username List
+      - name: Collect Request Files
         id: collect
         shell: bash
         run: |
           set -euo pipefail
 
-          # Initialize an empty list.
-          user_list=""
+          requests_file="$RUNNER_TEMP/org-admin-requests.json"
+          export REQUESTS_FILE="$requests_file"
 
-          # Use process substitution to keep the loop in the current shell.
-          while IFS= read -r -d '' file; do
-            echo "Processing file: $file"
+          ruby -ryaml -rjson -e '
+            files = Dir.glob(["./org-admin/**/*.yml", "./org-admin/**/*.yaml"]).sort
 
-            # Extract username from the YAML file.
-            username="$(
-              ruby -ryaml -e '
-                file = ARGV.fetch(0)
-                data = YAML.safe_load_file(file, aliases: false)
+            requests = files.map do |file|
+              puts "Processing file: #{file}"
 
-                unless data.is_a?(Hash) && data["username"].is_a?(String) && !data["username"].strip.empty?
-                  warn "Missing or invalid username in #{file}"
-                  exit 1
-                end
+              data = YAML.safe_load_file(file, aliases: false)
 
-                puts data["username"].strip
-              ' "$file"
-            )"
+              unless data.is_a?(Hash)
+                warn "::error file=#{file}::Request file must contain a YAML object."
+                exit 1
+              end
 
-            if [ -z "$user_list" ]; then
-              user_list="$username"
-            else
-              user_list="$user_list,$username"
-            fi
-          done < <(find ./org-admin -type f \( -name "*.yml" -o -name "*.yaml" \) -print0)
+              username = data["username"].to_s.strip
+              reason = data["reason"].to_s.strip
 
-          if [ -z "$user_list" ]; then
+              begin
+                duration = Integer(data["duration"])
+              rescue
+                warn "::error file=#{file}::duration must be a whole number of hours."
+                exit 1
+              end
+
+              if username.empty? || username == "githubUserName"
+                warn "::error file=#{file}::username is missing or still set to the template value."
+                exit 1
+              end
+
+              if duration <= 0
+                warn "::error file=#{file}::duration must be greater than 0."
+                exit 1
+              end
+
+              if reason.empty?
+                warn "::error file=#{file}::reason is required."
+                exit 1
+              end
+
+              {
+                "file" => file,
+                "username" => username,
+                "duration" => duration,
+                "reason" => reason
+              }
+            end
+
+            File.write(ENV.fetch("REQUESTS_FILE"), JSON.pretty_generate(requests))
+          '
+
+          if [ ! -s "$requests_file" ]; then
             echo "No YAML request files found."
             echo "usernames=" >> "$GITHUB_OUTPUT"
-          else
-            echo "Usernames to promote: $user_list"
-            echo "usernames=$user_list" >> "$GITHUB_OUTPUT"
+            echo "requests_file=$requests_file" >> "$GITHUB_OUTPUT"
+            exit 0
           fi
+
+          usernames="$(jq -r 'map(.username) | join(",")' "$requests_file")"
+
+          echo "Usernames to promote: $usernames"
+          echo "usernames=$usernames" >> "$GITHUB_OUTPUT"
+          echo "requests_file=$requests_file" >> "$GITHUB_OUTPUT"
 
       - name: Promote Users to Org Admin using gh CLI
         id: promote_admin
@@ -81,20 +109,24 @@ jobs:
         run: |
           set -euo pipefail
 
-          usernames="${{ steps.collect.outputs.usernames }}"
+          requests_file="${{ steps.collect.outputs.requests_file }}"
 
-          if [ -z "$usernames" ]; then
-            echo "No usernames to promote."
+          if [ ! -s "$requests_file" ]; then
+            echo "No users to promote."
             exit 0
           fi
 
-          # Split the comma-separated list into an array.
-          IFS=',' read -r -a usernames_array <<< "$usernames"
+          jq -c '.[]' "$requests_file" | while IFS= read -r request; do
+            username="$(jq -r '.username' <<< "$request")"
+            duration="$(jq -r '.duration' <<< "$request")"
+            reason="$(jq -r '.reason' <<< "$request")"
+            source_file="$(jq -r '.file' <<< "$request")"
 
-          for username in "${usernames_array[@]}"; do
             echo "Processing user: $username"
+            echo "Request file: $source_file"
+            echo "Requested duration: $duration hour(s)"
+            echo "Reason: $reason"
 
-            # Verify that the user is a member of the organization by checking for a 204 status code.
             member=$(curl -L -s -o /dev/null -w "%{http_code}" \
               -H "Accept: application/vnd.github+json" \
               -H "Authorization: Bearer ${{ steps.create_token.outputs.token }}" \
@@ -106,8 +138,11 @@ jobs:
               continue
             fi
 
-            # Promote the user by updating their membership to admin.
-            gh api --method PUT "/orgs/${{ github.repository_owner }}/memberships/$username" -f role=admin --silent
+            gh api \
+              --method PUT \
+              "/orgs/${{ github.repository_owner }}/memberships/$username" \
+              -f role=admin \
+              --silent
 
-            echo "User $username has been promoted to org admin."
+            echo "User $username has been promoted to org admin for $duration hour(s)."
           done
