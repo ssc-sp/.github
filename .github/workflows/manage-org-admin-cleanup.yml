@@ -1,0 +1,154 @@
+name: JIT Org Admin Cleanup
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 * * * *" # Runs every hour
+
+permissions: read-all
+
+jobs:
+  deprovision:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create App token
+        id: create_token
+        uses: ssc-sp/.github/.github/actions/create-app-token@main
+        with:
+          app-id: ${{ vars.ORG_MEMBER_TEAM_ADMIN_ID }}
+          private-key: ${{ secrets.ORG_MEMBER_TEAM_ADMIN_KEY }}
+          owner: ${{ github.repository_owner }}
+
+      - name: Set up GitHub CLI
+        shell: bash
+        run: |
+          gh auth login --with-token <<< "${{ steps.create_token.outputs.token }}"
+
+      - name: Checkout Repository
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+        with:
+          fetch-depth: 0
+          token: ${{ steps.create_token.outputs.token }}
+          ref: main
+
+      - name: Process Expired Admin Requests
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          found_requests=false
+
+          # Use a null-delimited loop so filenames with spaces do not break.
+          while IFS= read -r -d '' file; do
+            found_requests=true
+
+            echo "Processing file: $file"
+
+            request_json="$(
+              ruby -ryaml -rjson -e '
+                file = ARGV.fetch(0)
+                data = YAML.safe_load_file(file, aliases: false)
+
+                unless data.is_a?(Hash)
+                  warn "::error file=#{file}::Request file must contain a YAML object."
+                  exit 1
+                end
+
+                username = data["username"].to_s.strip
+                reason = data["reason"].to_s.strip
+
+                begin
+                  duration = Integer(data["duration"])
+                rescue
+                  warn "::error file=#{file}::duration must be a whole number of hours."
+                  exit 1
+                end
+
+                if username.empty? || username == "githubUserName"
+                  warn "::error file=#{file}::username is missing or still set to the template value."
+                  exit 1
+                end
+
+                if duration <= 0
+                  warn "::error file=#{file}::duration must be greater than 0."
+                  exit 1
+                end
+
+                if reason.empty?
+                  warn "::error file=#{file}::reason is required."
+                  exit 1
+                end
+
+                puts JSON.generate({
+                  "username" => username,
+                  "duration" => duration,
+                  "reason" => reason
+                })
+              ' "$file"
+            )"
+
+            username="$(jq -r '.username' <<< "$request_json")"
+            duration="$(jq -r '.duration' <<< "$request_json")"
+            reason="$(jq -r '.reason' <<< "$request_json")"
+
+            echo "Username: $username"
+            echo "Duration: $duration hour(s)"
+            echo "Reason: $reason"
+
+            # Use the first commit that introduced/tracked the file.
+            # This prevents someone from extending access just by editing the file.
+            commit_ts="$(git log --reverse --format=%ct -- "$file" | head -n 1)"
+
+            if [ -z "$commit_ts" ]; then
+              echo "::error file=$file::Could not determine the request file commit timestamp."
+              exit 1
+            fi
+
+            echo "Request start timestamp: $commit_ts"
+
+            duration_seconds=$(( duration * 3600 ))
+            expiration=$(( commit_ts + duration_seconds ))
+            current_ts="$(date +%s)"
+
+            echo "Expiration timestamp: $expiration"
+            echo "Current timestamp: $current_ts"
+
+            if [ "$current_ts" -ge "$expiration" ]; then
+              echo "Request for $username has expired. Demoting user and removing request file."
+
+              gh api \
+                --method PUT \
+                "/orgs/${{ github.repository_owner }}/memberships/$username" \
+                -f role=member \
+                --silent
+
+              git rm "$file"
+
+              echo "User $username has been demoted to org member."
+            else
+              echo "Request for $username is still valid."
+            fi
+
+          done < <(find ./org-admin -type f \( -name "*.yml" -o -name "*.yaml" \) -print0)
+
+          if [ "$found_requests" = false ]; then
+            echo "No YAML admin request files found."
+          fi
+
+      - name: Commit and Push Changes
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ steps.create_token.outputs.token }}
+        run: |
+          set -euo pipefail
+
+          if [ -n "$(git status --porcelain)" ]; then
+            git config user.name "FSDH Org Admin Manager App"
+            git config user.email "${{ vars.FSDH_ORG_ADMIN_PROMOTION_APP_ID }}+fsdh-org-admin-manager-app[bot]@users.noreply.github.com"
+
+            git commit -m "Remove expired admin requests"
+            git push origin HEAD:main
+          else
+            echo "No expired requests to remove."
+          fi
