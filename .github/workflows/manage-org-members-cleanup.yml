@@ -2,7 +2,7 @@ name: Update Member Inactivity Status
 
 on:
   schedule:
-    - cron: "0 2 * * *" # daily at 02:00 UTC, after the public activity tracker
+    - cron: "0 2 * * *" # daily at 02:00 UTC
   workflow_dispatch:
     inputs:
       what_if:
@@ -10,6 +10,10 @@ on:
         type: boolean
         required: false
         default: true
+
+concurrency:
+  group: org-membership-state
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -19,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      WHAT_IF: ${{ inputs.what_if || false }}
+      WHAT_IF: ${{ github.event_name == 'workflow_dispatch' && inputs.what_if == true }}
 
     steps:
       - name: Create App token
@@ -33,7 +37,85 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
         with:
+          fetch-depth: 0
           token: ${{ steps.create_token.outputs.token }}
+
+      - name: Build active JIT admin list
+        id: active_jit
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          active_jit_admins_file="$RUNNER_TEMP/active-jit-admins.txt"
+          : > "$active_jit_admins_file"
+
+          parse_request() {
+            local file="$1"
+
+            ruby -ryaml -rjson -e '
+              file = ARGV.fetch(0)
+              data = YAML.safe_load_file(file, aliases: false)
+
+              unless data.is_a?(Hash)
+                warn "::error file=#{file}::Request file must contain a YAML object."
+                exit 1
+              end
+
+              username = data["username"].to_s.strip
+
+              begin
+                duration = Integer(data["duration"])
+              rescue
+                warn "::error file=#{file}::duration must be a whole number of hours."
+                exit 1
+              end
+
+              if username.empty? || username == "githubUserName"
+                warn "::error file=#{file}::username is missing or still set to the template value."
+                exit 1
+              end
+
+              if duration <= 0
+                warn "::error file=#{file}::duration must be greater than 0."
+                exit 1
+              end
+
+              puts JSON.generate({
+                "username" => username,
+                "duration" => duration
+              })
+            ' "$file"
+          }
+
+          if [ -d "./org-admin" ]; then
+            now_ts="$(date +%s)"
+
+            while IFS= read -r -d '' file; do
+              request_json="$(parse_request "$file")"
+              username="$(jq -r '.username' <<< "$request_json")"
+              duration="$(jq -r '.duration' <<< "$request_json")"
+
+              request_start_ts="$(git log --reverse --format=%ct -- "$file" | head -n 1)"
+
+              if [ -z "$request_start_ts" ]; then
+                echo "::warning file=$file::Could not determine request file commit timestamp."
+                continue
+              fi
+
+              expiration_ts=$(( request_start_ts + duration * 3600 ))
+
+              if [ "$now_ts" -lt "$expiration_ts" ]; then
+                echo "$username" >> "$active_jit_admins_file"
+              fi
+            done < <(find ./org-admin -type f \( -name "*.yml" -o -name "*.yaml" \) -print0)
+          fi
+
+          sort -u "$active_jit_admins_file" -o "$active_jit_admins_file"
+
+          echo "Active JIT admins:"
+          cat "$active_jit_admins_file" || true
+
+          echo "active_jit_admins_file=$active_jit_admins_file" >> "$GITHUB_OUTPUT"
 
       - name: Update inactive member statuses
         shell: bash
@@ -42,13 +124,11 @@ jobs:
 
           MEMBERS_FILE="org-membership/members.json"
           INACTIVE_AFTER_DAYS=90
+          ACTIVE_JIT_ADMINS_FILE="${{ steps.active_jit.outputs.active_jit_admins_file }}"
 
           if [ "$WHAT_IF" = "true" ]; then
             echo "WHAT_IF mode is enabled."
             echo "The workflow will calculate status changes and show a diff, but will not modify $MEMBERS_FILE."
-          else
-            echo "WHAT_IF mode is disabled."
-            echo "The workflow may update and commit $MEMBERS_FILE."
           fi
 
           if [ ! -f "$MEMBERS_FILE" ]; then
@@ -63,13 +143,21 @@ jobs:
             WORKING_MEMBERS_FILE="$MEMBERS_FILE"
           fi
 
+          export WORKING_MEMBERS_FILE
+          export INACTIVE_AFTER_DAYS
+          export ACTIVE_JIT_ADMINS_FILE
+
           python3 <<'PY'
           import json
           import os
           from datetime import datetime, timezone, timedelta
 
           members_file = os.environ["WORKING_MEMBERS_FILE"]
-          inactive_after_days = int(os.environ.get("INACTIVE_AFTER_DAYS", "90"))
+          inactive_after_days = int(os.environ["INACTIVE_AFTER_DAYS"])
+          active_jit_admins_file = os.environ["ACTIVE_JIT_ADMINS_FILE"]
+
+          with open(active_jit_admins_file, "r", encoding="utf-8") as file:
+              active_jit_admins = {line.strip() for line in file if line.strip()}
 
           now = datetime.now(timezone.utc)
           cutoff = now - timedelta(days=inactive_after_days)
@@ -91,6 +179,10 @@ jobs:
 
               if status == "nonremovable":
                   print(f"{username}: skipped because status is nonremovable.")
+                  continue
+
+              if username in active_jit_admins:
+                  print(f"{username}: skipped because user has an active JIT org-admin request.")
                   continue
 
               if not last_activity:
@@ -138,17 +230,14 @@ jobs:
 
             rm -f "$WORKING_MEMBERS_FILE"
           fi
-        env:
-          WORKING_MEMBERS_FILE: ${{ env.WORKING_MEMBERS_FILE }}
-          INACTIVE_AFTER_DAYS: 90
 
       - name: Commit and push updated JSON
-        if: ${{ inputs.what_if != true }}
+        if: ${{ env.WHAT_IF != 'true' }}
         shell: bash
         run: |
           set -euo pipefail
 
-          git config user.name "Org Event Watcher App"
+          git config user.name "FSDH Org Event Watcher App"
           git config user.email "${{ vars.ORG_MEMBER_TEAM_ADMIN_ID }}[bot]@users.noreply.github.com"
 
           git add org-membership/members.json
