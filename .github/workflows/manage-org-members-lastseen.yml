@@ -193,8 +193,8 @@ jobs:
         run: |
           set -euo pipefail
 
-          git config user.name "FSDH Org Event Watcher App"
-          git config user.email "${{ vars.FSDH_ORG_EVENT_WATCHER_APP_ID }}[bot]@users.noreply.github.com"
+          git config user.name "Org Event Watcher App"
+          git config user.email "${{ vars.ORG_MEMBER_TEAM_ADMIN_ID }}[bot]@users.noreply.github.com"
 
           git add org-membership/members.json
 

@@ -1,0 +1,161 @@
+name: Update Member Inactivity Status
+
+on:
+  schedule:
+    - cron: "0 2 * * *" # daily at 02:00 UTC, after the public activity tracker
+  workflow_dispatch:
+    inputs:
+      what_if:
+        description: "Run without changing org-membership/members.json"
+        type: boolean
+        required: false
+        default: true
+
+permissions:
+  contents: write
+
+jobs:
+  update-inactivity-status:
+    runs-on: ubuntu-latest
+
+    env:
+      WHAT_IF: ${{ inputs.what_if || false }}
+
+    steps:
+      - name: Create App token
+        id: create_token
+        uses: ssc-sp/.github/.github/actions/create-app-token@main
+        with:
+          app-id: ${{ vars.ORG_MEMBER_TEAM_ADMIN_ID }}
+          private-key: ${{ secrets.ORG_MEMBER_TEAM_ADMIN_KEY }}
+          owner: ${{ github.repository_owner }}
+
+      - name: Checkout repository
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+        with:
+          token: ${{ steps.create_token.outputs.token }}
+
+      - name: Update inactive member statuses
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          MEMBERS_FILE="org-membership/members.json"
+          INACTIVE_AFTER_DAYS=90
+
+          if [ "$WHAT_IF" = "true" ]; then
+            echo "WHAT_IF mode is enabled."
+            echo "The workflow will calculate status changes and show a diff, but will not modify $MEMBERS_FILE."
+          else
+            echo "WHAT_IF mode is disabled."
+            echo "The workflow may update and commit $MEMBERS_FILE."
+          fi
+
+          if [ ! -f "$MEMBERS_FILE" ]; then
+            echo "::error::Members file not found: $MEMBERS_FILE"
+            exit 1
+          fi
+
+          if [ "$WHAT_IF" = "true" ]; then
+            WORKING_MEMBERS_FILE="$(mktemp)"
+            cp "$MEMBERS_FILE" "$WORKING_MEMBERS_FILE"
+          else
+            WORKING_MEMBERS_FILE="$MEMBERS_FILE"
+          fi
+
+          python3 <<'PY'
+          import json
+          import os
+          from datetime import datetime, timezone, timedelta
+
+          members_file = os.environ["WORKING_MEMBERS_FILE"]
+          inactive_after_days = int(os.environ.get("INACTIVE_AFTER_DAYS", "90"))
+
+          now = datetime.now(timezone.utc)
+          cutoff = now - timedelta(days=inactive_after_days)
+
+          print(f"Current UTC time: {now.isoformat()}")
+          print(f"Inactive cutoff:   {cutoff.isoformat()}")
+          print(f"Policy: members with last_public_activity_at older than {inactive_after_days} days are inactive.")
+          print("")
+
+          with open(members_file, "r", encoding="utf-8") as file:
+              data = json.load(file)
+
+          changed = False
+
+          for member in data.get("members", []):
+              username = member.get("username", "<missing username>")
+              status = member.get("status")
+              last_activity = member.get("last_public_activity_at")
+
+              if status == "nonremovable":
+                  print(f"{username}: skipped because status is nonremovable.")
+                  continue
+
+              if not last_activity:
+                  print(f"{username}: skipped because last_public_activity_at is null.")
+                  continue
+
+              try:
+                  last_activity_dt = datetime.fromisoformat(last_activity.replace("Z", "+00:00"))
+              except ValueError:
+                  print(f"::warning::{username}: invalid last_public_activity_at value: {last_activity}")
+                  continue
+
+              if last_activity_dt < cutoff:
+                  if status != "inactive":
+                      print(f"{username}: setting status to inactive. Last activity was {last_activity}.")
+                      member["status"] = "inactive"
+                      changed = True
+                  else:
+                      print(f"{username}: already inactive. Last activity was {last_activity}.")
+              else:
+                  if status != "active":
+                      print(f"{username}: setting status to active. Last activity was {last_activity}.")
+                      member["status"] = "active"
+                      changed = True
+                  else:
+                      print(f"{username}: remains active. Last activity was {last_activity}.")
+
+          if changed:
+              with open(members_file, "w", encoding="utf-8") as file:
+                  json.dump(data, file, indent=2)
+                  file.write("\n")
+          else:
+              print("")
+              print("No status changes were required.")
+          PY
+
+          if [ "$WHAT_IF" = "true" ]; then
+            echo ""
+            echo "WHAT_IF: proposed changes:"
+            if diff -u "$MEMBERS_FILE" "$WORKING_MEMBERS_FILE"; then
+              echo "WHAT_IF: no changes would be made."
+            else
+              echo "WHAT_IF: diff shown above. No files were changed."
+            fi
+
+            rm -f "$WORKING_MEMBERS_FILE"
+          fi
+        env:
+          WORKING_MEMBERS_FILE: ${{ env.WORKING_MEMBERS_FILE }}
+          INACTIVE_AFTER_DAYS: 90
+
+      - name: Commit and push updated JSON
+        if: ${{ inputs.what_if != true }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git config user.name "Org Event Watcher App"
+          git config user.email "${{ vars.ORG_MEMBER_TEAM_ADMIN_ID }}[bot]@users.noreply.github.com"
+
+          git add org-membership/members.json
+
+          if git diff --cached --quiet; then
+            echo "No inactivity status updates to commit."
+          else
+            git commit -m "Automated: update member inactivity statuses"
+            git push
+          fi
