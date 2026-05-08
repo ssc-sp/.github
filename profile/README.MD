@@ -20,3 +20,11 @@
 ![GitHub forks](https://img.shields.io/github/forks/ssc-sp/.github?style=social)
 
 ![Last Commit](https://img.shields.io/github/last-commit/ssc-sp/.github) ![Pull Requests](https://img.shields.io/github/issues-pr/ssc-sp/.github) ![Closed Pull Requests](https://img.shields.io/github/issues-pr-closed/ssc-sp/.github) [![Secret Scan](https://github.com/ssc-sp/.github/actions/workflows/secret-scanning.yml/badge.svg)](https://github.com/ssc-sp/.github/actions/workflows/secret-scanning.yml) [![CodeQL](https://github.com/ssc-sp/.github/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/ssc-sp/.github/actions/workflows/github-code-scanning/codeql)
+
+
+### ![datahub-portal](https://github.com/ssc-sp/datahub-portal)
+
+![GitHub stars](https://img.shields.io/github/stars/ssc-sp/datahub-portal?style=social)
+![GitHub forks](https://img.shields.io/github/forks/ssc-sp/datahub-portal?style=social)
+
+![Last Commit](https://img.shields.io/github/last-commit/ssc-sp/datahub-portal) ![Pull Requests](https://img.shields.io/github/issues-pr/ssc-sp/datahub-portal) ![Closed Pull Requests](https://img.shields.io/github/issues-pr-closed/ssc-sp/datahub-portal) [![Secret Scan](https://github.com/ssc-sp/datahub-portal/actions/workflows/secret-scanning.yml/badge.svg)](https://github.com/ssc-sp/datahub-portal/actions/workflows/secret-scanning.yml) [![CodeQL](https://github.com/ssc-sp/datahub-portal/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/ssc-sp/datahub-portal/actions/workflows/github-code-scanning/codeql)
