@@ -4,73 +4,109 @@
       "username": "fsdh-breakglass-01",
       "email": "datasolutions-solutiondedonnees@ssc-spc.gc.ca",
       "role": "admin",
-      "status": "nonremovable"
+      "status": "nonremovable",
+      "last_public_activity_at": null,
+      "last_public_activity_event": null,
+      "last_public_activity_repo": null
     },
     {
       "username": "fsdh-breakglass-02",
       "email": "datasolutions-solutiondedonnees@ssc-spc.gc.ca",
       "role": "admin",
-      "status": "nonremovable"
+      "status": "nonremovable",
+      "last_public_activity_at": null,
+      "last_public_activity_event": null,
+      "last_public_activity_repo": null
     },
     {
       "username": "KingBain",
       "email": "john.bain@ssc-spc.gc.ca",
       "role": "admin",
-      "status": "active"
+      "status": "active",
+      "last_public_activity_at": null,
+      "last_public_activity_event": null,
+      "last_public_activity_repo": null
     },
     {
       "username": "ErikApption",
       "email": "erik.putrycz@ssc-spc.gc.ca",
       "role": "direct_member",
-      "status": "active"
+      "status": "active",
+      "last_public_activity_at": null,
+      "last_public_activity_event": null,
+      "last_public_activity_repo": null
     },
     {
       "username": "skaza999",
       "email": "shiraz.kazarian@ssc-spc.gc.ca",
       "role": "direct_member",
-      "status": "active"
+      "status": "active",
+      "last_public_activity_at": null,
+      "last_public_activity_event": null,
+      "last_public_activity_repo": null
     },
     {
       "username": "simon-wang-gc",
       "email": "simon.wang@ssc-spc.gc.ca",
       "role": "direct_member",
-      "status": "active"
+      "status": "active",
+      "last_public_activity_at": null,
+      "last_public_activity_event": null,
+      "last_public_activity_repo": null
     },
     {
       "username": "deb-h576",
       "email": "debra.hamilton@ssc-spc.gc.ca",
       "role": "direct_member",
-      "status": "active"
+      "status": "active",
+      "last_public_activity_at": null,
+      "last_public_activity_event": null,
+      "last_public_activity_repo": null
     },
     {
       "username": "joeHachache",
       "email": "joe.hachache@ssc-spc.gc.ca",
       "role": "direct_member",
-      "status": "active"
+      "status": "active",
+      "last_public_activity_at": null,
+      "last_public_activity_event": null,
+      "last_public_activity_repo": null
     },
     {
       "username": "siovan-ssc",
       "email": "Siovan.Gecelovsky@ssc-spc.gc.ca",
       "role": "direct_member",
-      "status": "active"
+      "status": "active",
+      "last_public_activity_at": null,
+      "last_public_activity_event": null,
+      "last_public_activity_repo": null
     },
     {
       "username": "vb-ssc",
       "email": "vladimir.bukharov@ssc-spc.gc.ca",
       "role": "direct_member",
-      "status": "active"
+      "status": "active",
+      "last_public_activity_at": null,
+      "last_public_activity_event": null,
+      "last_public_activity_repo": null
     },
     {
       "username": "Sean-Stilwell",
       "email": "sean.stilwell@ssc-spc.gc.ca",
       "role": "direct_member",
-      "status": "active"
+      "status": "active",
+      "last_public_activity_at": null,
+      "last_public_activity_event": null,
+      "last_public_activity_repo": null
     },
     {
       "username": "wendychee",
       "email": "Wendy.Chee@ssc-spc.gc.ca",
       "role": "direct_member",
-      "status": "active"
+      "status": "active",
+      "last_public_activity_at": null,
+      "last_public_activity_event": null,
+      "last_public_activity_repo": null
     }
   ]
 }
