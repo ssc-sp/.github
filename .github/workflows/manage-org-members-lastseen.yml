@@ -1,0 +1,206 @@
+name: Update Member Public Activity
+
+on:
+  schedule:
+    - cron: "0 1 * * *" # daily at 01:00 UTC
+  workflow_dispatch:
+    inputs:
+      what_if:
+        description: "Run without changing org-membership/members.json"
+        type: boolean
+        required: false
+        default: true
+
+permissions:
+  contents: write
+
+jobs:
+  update-public-activity:
+    runs-on: ubuntu-latest
+
+    env:
+      WHAT_IF: ${{ inputs.what_if || false }}
+
+    steps:
+      - name: Create App token
+        id: create_token
+        uses: fsdh-pfds/.github/.github/actions/create-app-token@main
+        with:
+          app-id: ${{ vars.FSDH_ORG_EVENT_WATCHER_APP_ID }}
+          private-key: ${{ secrets.FSDH_ORG_EVENT_WATCHER_APP_KEY }}
+          owner: ${{ github.repository_owner }}
+
+      - name: Set up GitHub CLI
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          gh auth login --with-token <<< "${{ steps.create_token.outputs.token }}"
+
+      - name: Checkout repository
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+        with:
+          token: ${{ steps.create_token.outputs.token }}
+
+      - name: Update member public activity
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          ORG="ssc-sp"
+          MEMBERS_FILE="org-membership/members.json"
+          API_EVENT_WINDOW_DAYS=30
+
+          if [ "$WHAT_IF" = "true" ]; then
+            echo "WHAT_IF mode is enabled."
+            echo "The workflow will check activity and produce a diff, but will not modify $MEMBERS_FILE."
+          else
+            echo "WHAT_IF mode is disabled."
+            echo "The workflow may update and commit $MEMBERS_FILE."
+          fi
+
+          cutoff="$(date -u -d "$API_EVENT_WINDOW_DAYS days ago" +"%Y-%m-%dT%H:%M:%SZ")"
+
+          echo "Checking public GitHub activity for organization: $ORG"
+          echo "GitHub Events API window starts at: $cutoff"
+
+          if [ ! -f "$MEMBERS_FILE" ]; then
+            echo "::error::Members file not found: $MEMBERS_FILE"
+            exit 1
+          fi
+
+          # In what-if mode, update a temp copy so we can show the proposed diff
+          # without changing the real membership file.
+          if [ "$WHAT_IF" = "true" ]; then
+            WORKING_MEMBERS_FILE="$(mktemp)"
+            cp "$MEMBERS_FILE" "$WORKING_MEMBERS_FILE"
+          else
+            WORKING_MEMBERS_FILE="$MEMBERS_FILE"
+          fi
+
+          mapfile -t usernames < <(
+            jq -r '
+              .members[]
+              | select(.status != "nonremovable")
+              | .username
+            ' "$WORKING_MEMBERS_FILE"
+          )
+
+          if [ "${#usernames[@]}" -eq 0 ]; then
+            echo "No removable members found to evaluate."
+            exit 0
+          fi
+
+          for username in "${usernames[@]}"; do
+            echo "Evaluating public activity for: $username"
+
+            events_json_file="$(mktemp)"
+            gh_error_file="$(mktemp)"
+
+            if ! gh api "/users/$username/events/public?per_page=100" --paginate --slurp > "$events_json_file" 2> "$gh_error_file"; then
+              echo "::warning::Could not fetch public events for $username. Skipping."
+              cat "$gh_error_file"
+              rm -f "$events_json_file" "$gh_error_file"
+              continue
+            fi
+
+            latest_event="$(
+              jq -c \
+                --arg org "$ORG" \
+                --arg cutoff "$cutoff" \
+                '
+                  (add // [])
+                  | [
+                      .[]
+                      | select(.created_at >= $cutoff)
+                      | select(.org.login? == $org)
+                      | {
+                          created_at: .created_at,
+                          event: .type,
+                          repo: .repo.name
+                        }
+                    ]
+                  | sort_by(.created_at)
+                  | reverse
+                  | .[0] // empty
+                ' "$events_json_file"
+            )"
+
+            rm -f "$events_json_file" "$gh_error_file"
+
+            if [ -z "$latest_event" ]; then
+              echo "No public org activity found for $username in the GitHub Events API window."
+              echo "Leaving existing last_public_activity_* values unchanged."
+              continue
+            fi
+
+            latest_activity_at="$(jq -r '.created_at' <<< "$latest_event")"
+            latest_activity_event="$(jq -r '.event' <<< "$latest_event")"
+            latest_activity_repo="$(jq -r '.repo' <<< "$latest_event")"
+
+            current_activity_at="$(
+              jq -r --arg username "$username" '
+                (.members[] | select(.username == $username)).last_public_activity_at // ""
+              ' "$WORKING_MEMBERS_FILE"
+            )"
+
+            echo "Latest public org activity found for $username:"
+            echo "  last_public_activity_at:    $latest_activity_at"
+            echo "  last_public_activity_event: $latest_activity_event"
+            echo "  last_public_activity_repo:  $latest_activity_repo"
+
+            if [ "$current_activity_at" = "$latest_activity_at" ]; then
+              echo "Stored activity is already current for $username."
+              continue
+            fi
+
+            if [ "$WHAT_IF" = "true" ]; then
+              echo "WHAT_IF: would update $username from '${current_activity_at:-null}' to '$latest_activity_at'."
+            fi
+
+            tmp_file="$(mktemp)"
+
+            jq \
+              --arg username "$username" \
+              --arg latest_activity_at "$latest_activity_at" \
+              --arg latest_activity_event "$latest_activity_event" \
+              --arg latest_activity_repo "$latest_activity_repo" \
+              '
+                (.members[] | select(.username == $username)).last_public_activity_at = $latest_activity_at
+                |
+                (.members[] | select(.username == $username)).last_public_activity_event = $latest_activity_event
+                |
+                (.members[] | select(.username == $username)).last_public_activity_repo = $latest_activity_repo
+              ' "$WORKING_MEMBERS_FILE" > "$tmp_file"
+
+            mv "$tmp_file" "$WORKING_MEMBERS_FILE"
+          done
+
+          if [ "$WHAT_IF" = "true" ]; then
+            echo "WHAT_IF: proposed changes:"
+            if diff -u "$MEMBERS_FILE" "$WORKING_MEMBERS_FILE"; then
+              echo "WHAT_IF: no changes would be made."
+            else
+              echo "WHAT_IF: diff shown above. No files were changed."
+            fi
+
+            rm -f "$WORKING_MEMBERS_FILE"
+          fi
+
+      - name: Commit and push updated JSON
+        if: ${{ inputs.what_if != true }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git config user.name "FSDH Org Event Watcher App"
+          git config user.email "${{ vars.FSDH_ORG_EVENT_WATCHER_APP_ID }}[bot]@users.noreply.github.com"
+
+          git add org-membership/members.json
+
+          if git diff --cached --quiet; then
+            echo "No public activity updates to commit."
+          else
+            git commit -m "Automated: update member public activity"
+            git push
+          fi
