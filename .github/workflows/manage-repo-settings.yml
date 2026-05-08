@@ -56,4 +56,3 @@ jobs:
           else
             echo "All repository settings applied successfully."
           fi
-          
