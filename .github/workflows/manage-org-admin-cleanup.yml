@@ -2,14 +2,28 @@ name: JIT Org Admin Cleanup
 
 on:
   workflow_dispatch:
+    inputs:
+      what_if:
+        description: "Run without demoting users or removing request files"
+        type: boolean
+        required: false
+        default: true
   schedule:
     - cron: "0 * * * *" # Runs every hour
 
-permissions: read-all
+concurrency:
+  group: org-membership-state
+  cancel-in-progress: false
+
+permissions:
+  contents: write
 
 jobs:
   deprovision:
     runs-on: ubuntu-latest
+
+    env:
+      WHAT_IF: ${{ github.event_name == 'workflow_dispatch' && inputs.what_if == true }}
 
     steps:
       - name: Create App token
@@ -23,6 +37,7 @@ jobs:
       - name: Set up GitHub CLI
         shell: bash
         run: |
+          set -euo pipefail
           gh auth login --with-token <<< "${{ steps.create_token.outputs.token }}"
 
       - name: Checkout Repository
@@ -37,99 +52,201 @@ jobs:
         run: |
           set -euo pipefail
 
+          MEMBERS_FILE="org-membership/members.json"
+          ORG="${{ github.repository_owner }}"
+
+          if [ "$WHAT_IF" = "true" ]; then
+            echo "WHAT_IF mode is enabled."
+            echo "Expired requests will be evaluated, but users will not be demoted and files will not be removed."
+          fi
+
+          if [ ! -f "$MEMBERS_FILE" ]; then
+            echo "::error::Members file not found: $MEMBERS_FILE"
+            exit 1
+          fi
+
+          parse_request() {
+            local file="$1"
+
+            ruby -ryaml -rjson -e '
+              file = ARGV.fetch(0)
+              data = YAML.safe_load_file(file, aliases: false)
+
+              unless data.is_a?(Hash)
+                warn "::error file=#{file}::Request file must contain a YAML object."
+                exit 1
+              end
+
+              username = data["username"].to_s.strip
+              reason = data["reason"].to_s.strip
+
+              begin
+                duration = Integer(data["duration"])
+              rescue
+                warn "::error file=#{file}::duration must be a whole number of hours."
+                exit 1
+              end
+
+              if username.empty? || username == "githubUserName"
+                warn "::error file=#{file}::username is missing or still set to the template value."
+                exit 1
+              end
+
+              if duration <= 0
+                warn "::error file=#{file}::duration must be greater than 0."
+                exit 1
+              end
+
+              if reason.empty?
+                warn "::error file=#{file}::reason is required."
+                exit 1
+              end
+
+              puts JSON.generate({
+                "username" => username,
+                "duration" => duration,
+                "reason" => reason
+              })
+            ' "$file"
+          }
+
+          has_unexpired_request_for_user() {
+            local target_username="$1"
+            local skip_file="$2"
+            local now_ts
+            now_ts="$(date +%s)"
+
+            if [ ! -d "./org-admin" ]; then
+              return 1
+            fi
+
+            while IFS= read -r -d '' other_file; do
+              if [ "$other_file" = "$skip_file" ]; then
+                continue
+              fi
+
+              request_json="$(parse_request "$other_file")"
+              other_username="$(jq -r '.username' <<< "$request_json")"
+              other_duration="$(jq -r '.duration' <<< "$request_json")"
+
+              if [ "$other_username" != "$target_username" ]; then
+                continue
+              fi
+
+              other_start_ts="$(git log --reverse --format=%ct -- "$other_file" | head -n 1)"
+
+              if [ -z "$other_start_ts" ]; then
+                echo "::warning file=$other_file::Could not determine commit timestamp."
+                continue
+              fi
+
+              other_expiration_ts=$(( other_start_ts + other_duration * 3600 ))
+
+              if [ "$now_ts" -lt "$other_expiration_ts" ]; then
+                return 0
+              fi
+            done < <(find ./org-admin -type f \( -name "*.yml" -o -name "*.yaml" \) -print0)
+
+            return 1
+          }
+
+          baseline_api_role_for_user() {
+            local username="$1"
+
+            baseline_role="$(
+              jq -r --arg username "$username" '
+                .members[]
+                | select(.username == $username)
+                | .role // empty
+              ' "$MEMBERS_FILE" | head -n 1
+            )"
+
+            case "$baseline_role" in
+              admin)
+                echo "admin"
+                ;;
+              direct_member|member)
+                echo "member"
+                ;;
+              "")
+                echo "::warning::$username does not exist in $MEMBERS_FILE. Falling back to member." >&2
+                echo "member"
+                ;;
+              *)
+                echo "::error::$username has unsupported baseline role: $baseline_role" >&2
+                exit 1
+                ;;
+            esac
+          }
+
+          if [ ! -d "./org-admin" ]; then
+            echo "No org-admin directory found."
+            exit 0
+          fi
+
           found_requests=false
 
-          # Use a null-delimited loop so filenames with spaces do not break.
           while IFS= read -r -d '' file; do
             found_requests=true
-
             echo "Processing file: $file"
 
-            request_json="$(
-              ruby -ryaml -rjson -e '
-                file = ARGV.fetch(0)
-                data = YAML.safe_load_file(file, aliases: false)
-
-                unless data.is_a?(Hash)
-                  warn "::error file=#{file}::Request file must contain a YAML object."
-                  exit 1
-                end
-
-                username = data["username"].to_s.strip
-                reason = data["reason"].to_s.strip
-
-                begin
-                  duration = Integer(data["duration"])
-                rescue
-                  warn "::error file=#{file}::duration must be a whole number of hours."
-                  exit 1
-                end
-
-                if username.empty? || username == "githubUserName"
-                  warn "::error file=#{file}::username is missing or still set to the template value."
-                  exit 1
-                end
-
-                if duration <= 0
-                  warn "::error file=#{file}::duration must be greater than 0."
-                  exit 1
-                end
-
-                if reason.empty?
-                  warn "::error file=#{file}::reason is required."
-                  exit 1
-                end
-
-                puts JSON.generate({
-                  "username" => username,
-                  "duration" => duration,
-                  "reason" => reason
-                })
-              ' "$file"
-            )"
+            request_json="$(parse_request "$file")"
 
             username="$(jq -r '.username' <<< "$request_json")"
             duration="$(jq -r '.duration' <<< "$request_json")"
             reason="$(jq -r '.reason' <<< "$request_json")"
 
-            echo "Username: $username"
-            echo "Duration: $duration hour(s)"
-            echo "Reason: $reason"
+            request_start_ts="$(git log --reverse --format=%ct -- "$file" | head -n 1)"
 
-            # Use the first commit that introduced/tracked the file.
-            # This prevents someone from extending access just by editing the file.
-            commit_ts="$(git log --reverse --format=%ct -- "$file" | head -n 1)"
-
-            if [ -z "$commit_ts" ]; then
-              echo "::error file=$file::Could not determine the request file commit timestamp."
+            if [ -z "$request_start_ts" ]; then
+              echo "::error file=$file::Could not determine request file commit timestamp."
               exit 1
             fi
 
-            echo "Request start timestamp: $commit_ts"
-
             duration_seconds=$(( duration * 3600 ))
-            expiration=$(( commit_ts + duration_seconds ))
+            expiration_ts=$(( request_start_ts + duration_seconds ))
             current_ts="$(date +%s)"
 
-            echo "Expiration timestamp: $expiration"
+            echo "Username: $username"
+            echo "Duration: $duration hour(s)"
+            echo "Reason: $reason"
+            echo "Request start timestamp: $request_start_ts"
+            echo "Expiration timestamp: $expiration_ts"
             echo "Current timestamp: $current_ts"
 
-            if [ "$current_ts" -ge "$expiration" ]; then
-              echo "Request for $username has expired. Demoting user and removing request file."
-
-              gh api \
-                --method PUT \
-                "/orgs/${{ github.repository_owner }}/memberships/$username" \
-                -f role=member \
-                --silent
-
-              git rm "$file"
-
-              echo "User $username has been demoted to org member."
-            else
+            if [ "$current_ts" -lt "$expiration_ts" ]; then
               echo "Request for $username is still valid."
+              continue
             fi
 
+            echo "Request for $username has expired."
+
+            if [ "$WHAT_IF" = "true" ]; then
+              echo "WHAT_IF: would remove request file $file."
+            else
+              git rm "$file"
+            fi
+
+            if has_unexpired_request_for_user "$username" "$file"; then
+              echo "$username has another active JIT admin request. Skipping demotion."
+              continue
+            fi
+
+            baseline_api_role="$(baseline_api_role_for_user "$username")"
+
+            echo "Restoring $username to baseline API role: $baseline_api_role"
+
+            if [ "$WHAT_IF" = "true" ]; then
+              echo "WHAT_IF: would set $username membership role to $baseline_api_role."
+            else
+              gh api \
+                --method PUT \
+                "/orgs/$ORG/memberships/$username" \
+                --field role="$baseline_api_role" \
+                --silent
+
+              echo "$username restored to baseline API role: $baseline_api_role"
+            fi
           done < <(find ./org-admin -type f \( -name "*.yml" -o -name "*.yaml" \) -print0)
 
           if [ "$found_requests" = false ]; then
@@ -137,15 +254,14 @@ jobs:
           fi
 
       - name: Commit and Push Changes
+        if: ${{ env.WHAT_IF != 'true' }}
         shell: bash
-        env:
-          GITHUB_TOKEN: ${{ steps.create_token.outputs.token }}
         run: |
           set -euo pipefail
 
           if [ -n "$(git status --porcelain)" ]; then
-            git config user.name "FSDH Org Admin Manager App"
-            git config user.email "${{ vars.FSDH_ORG_ADMIN_PROMOTION_APP_ID }}+fsdh-org-admin-manager-app[bot]@users.noreply.github.com"
+            git config user.name "Org Admin Manager App"
+            git config user.email "${{ vars.ORG_MEMBER_TEAM_ADMIN_ID }}+fsdh-org-admin-manager-app[bot]@users.noreply.github.com"
 
             git commit -m "Remove expired admin requests"
             git push origin HEAD:main
