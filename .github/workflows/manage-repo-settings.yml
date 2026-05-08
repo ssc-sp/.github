@@ -1,0 +1,58 @@
+name: Manage Repository Settings
+
+on:
+  schedule:
+    # Run the workflow every hour
+    - cron: "0 * * * *"
+  push:
+    branches:
+      - main
+    paths:
+      - "repo-settings/*.json"
+  workflow_dispatch:
+
+permissions: read-all
+
+jobs:
+  deploy_settings:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create App token
+        id: create_token
+        uses: ssc-sp/.github/.github/actions/create-app-token@main
+        with:
+          app-id: ${{ vars.ORG_REPO_MANAGER_ID }}
+          private-key: ${{ secrets.ORG_REPO_MANAGER_KEY }}
+          owner: ${{ github.repository_owner }}
+
+      - name: Checkout repository
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+
+      - name: Set up GitHub CLI
+        run: |
+          gh auth login --with-token <<< "${{ steps.create_token.outputs.token }}"
+
+      - name: Enforcing repository settings
+        run: |
+          error_count=0
+          for file in repo-settings/*.json; do
+            echo "Processing $file..."
+            full_name=$(jq -r '.full_name' "$file")
+            if [ -z "$full_name" ]; then
+              echo "No full_name found in $file; skipping."
+              continue
+            fi
+            echo "Updating repository: $full_name"
+            if gh api --method PATCH "repos/${full_name}" --header "Content-Type: application/json" --input "$file" --silent; then
+              echo "Repository settings applied successfully for ${full_name}"
+            else
+              echo "Failed to update settings for ${full_name}"
+              error_count=$((error_count+1))
+            fi
+          done
+          if [ $error_count -gt 0 ]; then
+            echo "$error_count errors encountered while applying repository settings."
+            exit 1
+          else
+            echo "All repository settings applied successfully."
+          fi
