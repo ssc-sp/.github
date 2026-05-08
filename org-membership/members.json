@@ -23,36 +23,36 @@
       "email": "john.bain@ssc-spc.gc.ca",
       "role": "admin",
       "status": "active",
-      "last_public_activity_at": null,
-      "last_public_activity_event": null,
-      "last_public_activity_repo": null
+      "last_public_activity_at": "2026-05-08T15:27:17Z",
+      "last_public_activity_event": "PushEvent",
+      "last_public_activity_repo": "ssc-sp/.github"
     },
     {
       "username": "ErikApption",
       "email": "erik.putrycz@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": null,
-      "last_public_activity_event": null,
-      "last_public_activity_repo": null
+      "last_public_activity_at": "2026-05-07T19:17:59Z",
+      "last_public_activity_event": "DeleteEvent",
+      "last_public_activity_repo": "ssc-sp/datahub-portal"
     },
     {
       "username": "skaza999",
       "email": "shiraz.kazarian@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": null,
-      "last_public_activity_event": null,
-      "last_public_activity_repo": null
+      "last_public_activity_at": "2026-04-10T15:45:27Z",
+      "last_public_activity_event": "PullRequestReviewEvent",
+      "last_public_activity_repo": "ssc-sp/fsdh-pfds-docs"
     },
     {
       "username": "simon-wang-gc",
       "email": "simon.wang@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": null,
-      "last_public_activity_event": null,
-      "last_public_activity_repo": null
+      "last_public_activity_at": "2026-05-07T17:48:09Z",
+      "last_public_activity_event": "PullRequestReviewEvent",
+      "last_public_activity_repo": "ssc-sp/datahub-resource-modules"
     },
     {
       "username": "deb-h576",
@@ -77,27 +77,27 @@
       "email": "Siovan.Gecelovsky@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": null,
-      "last_public_activity_event": null,
-      "last_public_activity_repo": null
+      "last_public_activity_at": "2026-05-08T14:28:11Z",
+      "last_public_activity_event": "PullRequestReviewEvent",
+      "last_public_activity_repo": "ssc-sp/fsdh-pfds-docs"
     },
     {
       "username": "vb-ssc",
       "email": "vladimir.bukharov@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": null,
-      "last_public_activity_event": null,
-      "last_public_activity_repo": null
+      "last_public_activity_at": "2026-05-01T20:15:30Z",
+      "last_public_activity_event": "PushEvent",
+      "last_public_activity_repo": "ssc-sp/datahub-portal"
     },
     {
       "username": "Sean-Stilwell",
       "email": "sean.stilwell@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": null,
-      "last_public_activity_event": null,
-      "last_public_activity_repo": null
+      "last_public_activity_at": "2026-05-08T14:35:29Z",
+      "last_public_activity_event": "PullRequestEvent",
+      "last_public_activity_repo": "ssc-sp/fsdh-pfds-docs"
     },
     {
       "username": "wendychee",
