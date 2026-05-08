@@ -1,0 +1,3 @@
+username: KingBain # set to username who needs org admin; case sensitive
+duration: 3              # duration needed in hours
+reason: Need to create a new repo

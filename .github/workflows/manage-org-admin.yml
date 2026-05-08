@@ -1,0 +1,113 @@
+name: JIT Org Admin
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "org-admin/**/*.yml"
+      - "org-admin/**/*.yaml"
+
+permissions: read-all
+
+jobs:
+  promote-org-admin:
+    runs-on: ubuntu-latest
+    outputs:
+      usernames: ${{ steps.collect.outputs.usernames }}
+
+    steps:
+      - name: Create App token
+        id: create_token
+        uses: ssc-sp/.github/.github/actions/create-app-token@main
+        with:
+          app-id: ${{ vars.ORG_MEMBER_TEAM_ADMIN_ID }}
+          private-key: ${{ secrets.ORG_MEMBER_TEAM_ADMIN_KEY }}
+          owner: ${{ github.repository_owner }}
+
+      - name: Set up GitHub CLI
+        run: |
+          gh auth login --with-token <<< "${{ steps.create_token.outputs.token }}"
+
+      - name: Checkout Repository
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+
+      - name: Collect Request Files and Build Username List
+        id: collect
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          # Initialize an empty list.
+          user_list=""
+
+          # Use process substitution to keep the loop in the current shell.
+          while IFS= read -r -d '' file; do
+            echo "Processing file: $file"
+
+            # Extract username from the YAML file.
+            username="$(
+              ruby -ryaml -e '
+                file = ARGV.fetch(0)
+                data = YAML.safe_load_file(file, aliases: false)
+
+                unless data.is_a?(Hash) && data["username"].is_a?(String) && !data["username"].strip.empty?
+                  warn "Missing or invalid username in #{file}"
+                  exit 1
+                end
+
+                puts data["username"].strip
+              ' "$file"
+            )"
+
+            if [ -z "$user_list" ]; then
+              user_list="$username"
+            else
+              user_list="$user_list,$username"
+            fi
+          done < <(find ./org-admin -type f \( -name "*.yml" -o -name "*.yaml" \) -print0)
+
+          if [ -z "$user_list" ]; then
+            echo "No YAML request files found."
+            echo "usernames=" >> "$GITHUB_OUTPUT"
+          else
+            echo "Usernames to promote: $user_list"
+            echo "usernames=$user_list" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Promote Users to Org Admin using gh CLI
+        id: promote_admin
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          usernames="${{ steps.collect.outputs.usernames }}"
+
+          if [ -z "$usernames" ]; then
+            echo "No usernames to promote."
+            exit 0
+          fi
+
+          # Split the comma-separated list into an array.
+          IFS=',' read -r -a usernames_array <<< "$usernames"
+
+          for username in "${usernames_array[@]}"; do
+            echo "Processing user: $username"
+
+            # Verify that the user is a member of the organization by checking for a 204 status code.
+            member=$(curl -L -s -o /dev/null -w "%{http_code}" \
+              -H "Accept: application/vnd.github+json" \
+              -H "Authorization: Bearer ${{ steps.create_token.outputs.token }}" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "https://api.github.com/orgs/${{ github.repository_owner }}/members/$username")
+
+            if [ "$member" != "204" ]; then
+              echo "User $username is not a member of the organization. Skipping."
+              continue
+            fi
+
+            # Promote the user by updating their membership to admin.
+            gh api --method PUT "/orgs/${{ github.repository_owner }}/memberships/$username" -f role=admin --silent
+
+            echo "User $username has been promoted to org admin."
+          done
