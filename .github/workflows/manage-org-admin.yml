@@ -8,6 +8,10 @@ on:
       - "org-admin/**/*.yml"
       - "org-admin/**/*.yaml"
 
+concurrency:
+  group: org-membership-state
+  cancel-in-progress: false
+
 permissions: read-all
 
 jobs:
@@ -26,7 +30,9 @@ jobs:
           owner: ${{ github.repository_owner }}
 
       - name: Set up GitHub CLI
+        shell: bash
         run: |
+          set -euo pipefail
           gh auth login --with-token <<< "${{ steps.create_token.outputs.token }}"
 
       - name: Checkout Repository
@@ -103,7 +109,7 @@ jobs:
           echo "usernames=$usernames" >> "$GITHUB_OUTPUT"
           echo "requests_file=$requests_file" >> "$GITHUB_OUTPUT"
 
-      - name: Promote Users to Org Admin using gh CLI
+      - name: Promote Users to Org Admin
         id: promote_admin
         shell: bash
         run: |
@@ -127,13 +133,15 @@ jobs:
             echo "Requested duration: $duration hour(s)"
             echo "Reason: $reason"
 
-            member=$(curl -L -s -o /dev/null -w "%{http_code}" \
-              -H "Accept: application/vnd.github+json" \
-              -H "Authorization: Bearer ${{ steps.create_token.outputs.token }}" \
-              -H "X-GitHub-Api-Version: 2022-11-28" \
-              "https://api.github.com/orgs/${{ github.repository_owner }}/members/$username")
+            member_status="$(
+              curl -L -s -o /dev/null -w "%{http_code}" \
+                -H "Accept: application/vnd.github+json" \
+                -H "Authorization: Bearer ${{ steps.create_token.outputs.token }}" \
+                -H "X-GitHub-Api-Version: 2022-11-28" \
+                "https://api.github.com/orgs/${{ github.repository_owner }}/members/$username"
+            )"
 
-            if [ "$member" != "204" ]; then
+            if [ "$member_status" != "204" ]; then
               echo "User $username is not a member of the organization. Skipping."
               continue
             fi
@@ -141,7 +149,7 @@ jobs:
             gh api \
               --method PUT \
               "/orgs/${{ github.repository_owner }}/memberships/$username" \
-              -f role=admin \
+              --field role=admin \
               --silent
 
             echo "User $username has been promoted to org admin for $duration hour(s)."
