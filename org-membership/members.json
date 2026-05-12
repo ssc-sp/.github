@@ -23,16 +23,16 @@
       "email": "john.bain@ssc-spc.gc.ca",
       "role": "admin",
       "status": "active",
-      "last_public_activity_at": "2026-05-08T18:39:33Z",
+      "last_public_activity_at": "2026-05-12T18:07:30Z",
       "last_public_activity_event": "PushEvent",
-      "last_public_activity_repo": "ssc-sp/datahub-portal"
+      "last_public_activity_repo": "ssc-sp/.github"
     },
     {
       "username": "ErikApption",
       "email": "erik.putrycz@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-05-09T03:25:33Z",
+      "last_public_activity_at": "2026-05-12T17:55:21Z",
       "last_public_activity_event": "PushEvent",
       "last_public_activity_repo": "ssc-sp/datahub-portal"
     },
@@ -50,8 +50,8 @@
       "email": "simon.wang@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-05-07T17:48:09Z",
-      "last_public_activity_event": "PullRequestReviewEvent",
+      "last_public_activity_at": "2026-05-12T17:48:25Z",
+      "last_public_activity_event": "PushEvent",
       "last_public_activity_repo": "ssc-sp/datahub-resource-modules"
     },
     {
@@ -77,8 +77,8 @@
       "email": "Siovan.Gecelovsky@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-05-08T18:12:53Z",
-      "last_public_activity_event": "PushEvent",
+      "last_public_activity_at": "2026-05-12T11:51:23Z",
+      "last_public_activity_event": "PullRequestEvent",
       "last_public_activity_repo": "ssc-sp/datahub-portal"
     },
     {
@@ -86,8 +86,8 @@
       "email": "vladimir.bukharov@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-05-08T18:40:03Z",
-      "last_public_activity_event": "PushEvent",
+      "last_public_activity_at": "2026-05-11T22:15:25Z",
+      "last_public_activity_event": "PullRequestEvent",
       "last_public_activity_repo": "ssc-sp/datahub-portal"
     },
     {
@@ -95,8 +95,8 @@
       "email": "sean.stilwell@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-05-08T14:35:29Z",
-      "last_public_activity_event": "PullRequestEvent",
+      "last_public_activity_at": "2026-05-12T14:01:28Z",
+      "last_public_activity_event": "PushEvent",
       "last_public_activity_repo": "ssc-sp/fsdh-pfds-docs"
     },
     {
