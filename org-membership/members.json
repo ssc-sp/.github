@@ -23,8 +23,8 @@
       "email": "john.bain@ssc-spc.gc.ca",
       "role": "admin",
       "status": "active",
-      "last_public_activity_at": "2026-05-12T18:07:30Z",
-      "last_public_activity_event": "PushEvent",
+      "last_public_activity_at": "2026-05-12T18:54:59Z",
+      "last_public_activity_event": "DeleteEvent",
       "last_public_activity_repo": "ssc-sp/.github"
     },
     {
@@ -32,8 +32,8 @@
       "email": "erik.putrycz@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-05-12T17:55:21Z",
-      "last_public_activity_event": "PushEvent",
+      "last_public_activity_at": "2026-05-12T18:11:05Z",
+      "last_public_activity_event": "DeleteEvent",
       "last_public_activity_repo": "ssc-sp/datahub-portal"
     },
     {
@@ -95,9 +95,9 @@
       "email": "sean.stilwell@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-05-12T14:01:28Z",
-      "last_public_activity_event": "PushEvent",
-      "last_public_activity_repo": "ssc-sp/fsdh-pfds-docs"
+      "last_public_activity_at": "2026-05-12T18:54:56Z",
+      "last_public_activity_event": "PullRequestReviewEvent",
+      "last_public_activity_repo": "ssc-sp/.github"
     },
     {
       "username": "wendychee",
