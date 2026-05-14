@@ -342,3 +342,54 @@ jobs:
 
             rm -f "$membership_file" "$membership_error_file"
           done
+
+      - name: Remove unlisted organization members reconciliation
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          ORG="${{ github.repository_owner }}"
+          MEMBERS_FILE="org-membership/members.json"
+          ACTIVE_JIT_ADMINS_FILE="${{ steps.active_jit.outputs.active_jit_admins_file }}"
+
+          if [ "$WHAT_IF" = "true" ]; then
+            echo "WHAT_IF mode is enabled."
+            echo "Unlisted users will be evaluated, but not removed."
+          fi
+
+          # 1. Get all usernames currently listed in members.json
+          jq -r '.members[].username' "$MEMBERS_FILE" | tr '[:upper:]' '[:lower:]' | sort -u > known_users.txt
+
+          # 2. Get all actual members currently in the GitHub organization
+          gh api --paginate "/orgs/$ORG/members" -q '.[].login' | tr '[:upper:]' '[:lower:]' | sort -u > current_github_members.txt
+
+          # 3. Find users in GitHub that are NOT in members.json
+          comm -23 current_github_members.txt known_users.txt > unlisted_members.txt
+
+          if [ ! -s unlisted_members.txt ]; then
+            echo "No unlisted members found. Organization perfectly matches members.json."
+            exit 0
+          fi
+
+          echo "Found the following users in GitHub who are completely missing from members.json:"
+          cat unlisted_members.txt
+
+          while IFS= read -r username; do
+            [ -z "$username" ] && continue
+
+            if grep -Fxqi "$username" "$ACTIVE_JIT_ADMINS_FILE"; then
+              echo "Skipping removal for $username because they have an active JIT org-admin request."
+              continue
+            fi
+
+            if [ "$WHAT_IF" = "true" ]; then
+              echo "WHAT_IF: would remove unlisted member '$username' from the organization."
+            else
+              gh api \
+                --method DELETE \
+                "/orgs/$ORG/memberships/$username" \
+                --silent
+
+              echo "Removed '$username' from the organization (not found in members.json)."
+            fi
+          done < unlisted_members.txt
