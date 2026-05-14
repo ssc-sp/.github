@@ -357,13 +357,10 @@ jobs:
             echo "Unlisted users will be evaluated, but not removed."
           fi
 
-          # 1. Get all usernames currently listed in members.json
           jq -r '.members[].username' "$MEMBERS_FILE" | tr '[:upper:]' '[:lower:]' | sort -u > known_users.txt
 
-          # 2. Get all actual members currently in the GitHub organization
           gh api --paginate "/orgs/$ORG/members" -q '.[].login' | tr '[:upper:]' '[:lower:]' | sort -u > current_github_members.txt
 
-          # 3. Find users in GitHub that are NOT in members.json
           comm -23 current_github_members.txt known_users.txt > unlisted_members.txt
 
           if [ ! -s unlisted_members.txt ]; then
