@@ -116,6 +116,15 @@
       "last_public_activity_at": null,
       "last_public_activity_event": null,
       "last_public_activity_repo": null
+    },
+    {
+      "username": "SSC-JDegouffe",
+      "email": "julien.degouffe@ssc-spc.gc.ca",
+      "role": "direct_member",
+      "status": "active",
+      "last_public_activity_at": null,
+      "last_public_activity_event": null,
+      "last_public_activity_repo": null
     }
   ]
 }
