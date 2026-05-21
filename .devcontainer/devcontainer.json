@@ -1,0 +1,8 @@
+{
+  "name": "Admin Container",
+  "image": "mcr.microsoft.com/devcontainers/base:noble",
+  "features": {
+    "ghcr.io/devcontainers-community/npm-features/prettier:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  }
+}
