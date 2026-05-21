@@ -1,0 +1,26 @@
+{
+  "name": "guest-inviter-service-write",
+  "description": "FSDH Code Contributors to the guest-inviter-service repo",
+  "privacy": "closed",
+  "notification_setting": "notifications_enabled",
+  "members": [
+    {
+      "username": "ErikApption",
+      "role": "member"
+    },
+    {
+      "username": "simon-wang-gc",
+      "role": "member"
+    },
+    {
+      "username": "SSC-JDegouffe",
+      "role": "member"
+    }
+  ],
+  "repositories": [
+    {
+      "name": "guest-inviter-service",
+      "permissions": "push"
+    }
+  ]
+}
