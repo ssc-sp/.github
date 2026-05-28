@@ -6,9 +6,7 @@
   "conditions": {
     "ref_name": {
       "exclude": [],
-      "include": [
-        "~DEFAULT_BRANCH"
-      ]
+      "include": ["~DEFAULT_BRANCH"]
     }
   },
   "rules": [
@@ -57,9 +55,7 @@
         "require_code_owner_review": false,
         "require_last_push_approval": true,
         "required_review_thread_resolution": false,
-        "allowed_merge_methods": [
-          "squash"
-        ]
+        "allowed_merge_methods": ["squash"]
       }
     }
   ],
@@ -67,6 +63,11 @@
     {
       "actor_id": null,
       "actor_type": "OrganizationAdmin",
+      "bypass_mode": "always"
+    },
+    {
+      "actor_id": 3883691,
+      "actor_type": "Integration",
       "bypass_mode": "always"
     }
   ]
