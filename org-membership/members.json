@@ -23,8 +23,8 @@
       "email": "john.bain@ssc-spc.gc.ca",
       "role": "admin",
       "status": "active",
-      "last_public_activity_at": "2026-05-27T18:54:44Z",
-      "last_public_activity_event": "PullRequestEvent",
+      "last_public_activity_at": "2026-05-28T13:06:24Z",
+      "last_public_activity_event": "DeleteEvent",
       "last_public_activity_repo": "ssc-sp/.github"
     },
     {
@@ -32,9 +32,9 @@
       "email": "erik.putrycz@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-05-26T20:13:59Z",
+      "last_public_activity_at": "2026-05-28T15:01:31Z",
       "last_public_activity_event": "PushEvent",
-      "last_public_activity_repo": "ssc-sp/datahub-portal"
+      "last_public_activity_repo": "ssc-sp/datahub-docs"
     },
     {
       "username": "skaza999",
@@ -50,8 +50,8 @@
       "email": "simon.wang@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-05-27T17:41:37Z",
-      "last_public_activity_event": "PushEvent",
+      "last_public_activity_at": "2026-05-28T13:59:47Z",
+      "last_public_activity_event": "CreateEvent",
       "last_public_activity_repo": "ssc-sp/datahub-resource-modules"
     },
     {
@@ -77,8 +77,8 @@
       "email": "vladimir.bukharov@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-05-26T22:37:53Z",
-      "last_public_activity_event": "PushEvent",
+      "last_public_activity_at": "2026-05-28T19:25:13Z",
+      "last_public_activity_event": "PullRequestReviewEvent",
       "last_public_activity_repo": "ssc-sp/datahub-portal"
     },
     {
@@ -86,9 +86,9 @@
       "email": "sean.stilwell@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-05-27T18:46:59Z",
-      "last_public_activity_event": "PushEvent",
-      "last_public_activity_repo": "ssc-sp/datahub-portal"
+      "last_public_activity_at": "2026-05-28T12:11:35Z",
+      "last_public_activity_event": "PullRequestReviewEvent",
+      "last_public_activity_repo": "ssc-sp/.github"
     },
     {
       "username": "wendychee",
