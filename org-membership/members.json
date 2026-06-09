@@ -23,18 +23,18 @@
       "email": "john.bain@ssc-spc.gc.ca",
       "role": "admin",
       "status": "active",
-      "last_public_activity_at": "2026-06-03T17:38:23Z",
-      "last_public_activity_event": "PushEvent",
-      "last_public_activity_repo": "ssc-sp/fsdh-pfds-docs"
+      "last_public_activity_at": "2026-06-08T15:30:20Z",
+      "last_public_activity_event": "PullRequestReviewEvent",
+      "last_public_activity_repo": "ssc-sp/datahub-resource-modules"
     },
     {
       "username": "ErikApption",
       "email": "erik.putrycz@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-06-05T18:49:35Z",
+      "last_public_activity_at": "2026-06-08T21:18:58Z",
       "last_public_activity_event": "PushEvent",
-      "last_public_activity_repo": "ssc-sp/datahub-portal"
+      "last_public_activity_repo": "ssc-sp/datahub-docs"
     },
     {
       "username": "skaza999",
@@ -50,7 +50,7 @@
       "email": "simon.wang@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-06-03T13:24:36Z",
+      "last_public_activity_at": "2026-06-08T15:31:39Z",
       "last_public_activity_event": "DeleteEvent",
       "last_public_activity_repo": "ssc-sp/datahub-resource-modules"
     },
@@ -77,8 +77,8 @@
       "email": "vladimir.bukharov@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-06-04T20:59:26Z",
-      "last_public_activity_event": "PullRequestReviewEvent",
+      "last_public_activity_at": "2026-06-08T20:11:39Z",
+      "last_public_activity_event": "PushEvent",
       "last_public_activity_repo": "ssc-sp/datahub-portal"
     },
     {
@@ -86,8 +86,8 @@
       "email": "sean.stilwell@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-06-05T18:49:34Z",
-      "last_public_activity_event": "PullRequestEvent",
+      "last_public_activity_at": "2026-06-08T17:53:43Z",
+      "last_public_activity_event": "PullRequestReviewEvent",
       "last_public_activity_repo": "ssc-sp/datahub-portal"
     },
     {
