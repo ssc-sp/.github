@@ -6,7 +6,9 @@
   "conditions": {
     "ref_name": {
       "exclude": [],
-      "include": ["~DEFAULT_BRANCH"]
+      "include": [
+        "~DEFAULT_BRANCH"
+      ]
     }
   },
   "rules": [
@@ -28,7 +30,9 @@
         "require_code_owner_review": false,
         "require_last_push_approval": false,
         "required_review_thread_resolution": true,
-        "allowed_merge_methods": ["squash"]
+        "allowed_merge_methods": [
+          "squash"
+        ]
       }
     },
     {
@@ -60,6 +64,10 @@
           {
             "context": "Validate Title (Conventional Commits)",
             "integration_id": 15368
+          },
+          {
+            "context": "renovate/stability-days",
+            "integration_id": 2740
           }
         ]
       }
