@@ -23,16 +23,16 @@
       "email": "john.bain@ssc-spc.gc.ca",
       "role": "admin",
       "status": "active",
-      "last_public_activity_at": "2026-06-18T20:17:55Z",
+      "last_public_activity_at": "2026-06-20T02:01:24Z",
       "last_public_activity_event": "DeleteEvent",
-      "last_public_activity_repo": "ssc-sp/datahub-images"
+      "last_public_activity_repo": "ssc-sp/guest-inviter-service"
     },
     {
       "username": "ErikApption",
       "email": "erik.putrycz@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-06-19T02:48:58Z",
+      "last_public_activity_at": "2026-06-20T02:05:31Z",
       "last_public_activity_event": "PushEvent",
       "last_public_activity_repo": "ssc-sp/datahub-portal"
     },
@@ -77,9 +77,9 @@
       "email": "sean.stilwell@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-06-18T18:12:09Z",
+      "last_public_activity_at": "2026-06-19T18:54:41Z",
       "last_public_activity_event": "PullRequestReviewEvent",
-      "last_public_activity_repo": "ssc-sp/.github"
+      "last_public_activity_repo": "ssc-sp/datahub-portal"
     },
     {
       "username": "wendychee",
