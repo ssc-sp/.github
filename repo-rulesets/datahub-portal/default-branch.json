@@ -64,10 +64,6 @@
           {
             "context": "Validate Title (Conventional Commits)",
             "integration_id": 15368
-          },
-          {
-            "context": "renovate/stability-days",
-            "integration_id": 2740
           }
         ]
       }
