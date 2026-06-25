@@ -21,7 +21,7 @@
     {
       "username": "KingBain",
       "email": "john.bain@ssc-spc.gc.ca",
-      "role": "admin",
+      "role": "direct_member",
       "status": "active",
       "last_public_activity_at": "2026-06-24T21:11:02Z",
       "last_public_activity_event": "DeleteEvent",
