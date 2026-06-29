@@ -1,0 +1,6 @@
+# This is a template for requesting org admin access.
+# Rename the file to new-request.yaml and fill in the details.
+
+username: Sean-Stilwell # set to username who needs org admin; case sensitive
+duration: 72              # duration needed in hours
+reason: Just in case 
