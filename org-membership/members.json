@@ -23,9 +23,9 @@
       "email": "john.bain@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-06-26T22:48:39Z",
-      "last_public_activity_event": "PushEvent",
-      "last_public_activity_repo": "ssc-sp/datahub-images"
+      "last_public_activity_at": "2026-06-29T13:16:41Z",
+      "last_public_activity_event": "PullRequestEvent",
+      "last_public_activity_repo": "ssc-sp/.github"
     },
     {
       "username": "ErikApption",
@@ -50,9 +50,9 @@
       "email": "simon.wang@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-06-26T20:12:43Z",
-      "last_public_activity_event": "PullRequestReviewEvent",
-      "last_public_activity_repo": "ssc-sp/datahub-images"
+      "last_public_activity_at": "2026-06-29T19:27:49Z",
+      "last_public_activity_event": "DeleteEvent",
+      "last_public_activity_repo": "ssc-sp/datahub-resource-modules"
     },
     {
       "username": "deb-h576",
@@ -68,7 +68,7 @@
       "email": "Siovan.Gecelovsky@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-06-25T19:30:46Z",
+      "last_public_activity_at": "2026-06-29T18:23:04Z",
       "last_public_activity_event": "PullRequestEvent",
       "last_public_activity_repo": "ssc-sp/datahub-portal"
     },
@@ -77,9 +77,9 @@
       "email": "sean.stilwell@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-06-26T13:54:57Z",
-      "last_public_activity_event": "DeleteEvent",
-      "last_public_activity_repo": "ssc-sp/status-statut"
+      "last_public_activity_at": "2026-06-29T18:23:06Z",
+      "last_public_activity_event": "PushEvent",
+      "last_public_activity_repo": "ssc-sp/datahub-portal"
     },
     {
       "username": "wendychee",
