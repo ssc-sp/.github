@@ -5,7 +5,7 @@
 ## Continual Compliance
 
 <!-- prettier-ignore-start -->
-| Control| Continual Validation |
+| Control | Continual Validation |
 | --- | --- |
 | AC-1 | [![Manage Org Members](https://github.com/ssc-sp/.github/actions/workflows/manage-org-members.yml/badge.svg)](https://github.com/ssc-sp/.github/actions/workflows/manage-org-members.yml) |
 | AC-2 | [![Manage Organization Teams](https://github.com/ssc-sp/.github/actions/workflows/manage-org-teams.yml/badge.svg)](https://github.com/ssc-sp/.github/actions/workflows/manage-org-teams.yml) [![JIT Org Admin](https://github.com/ssc-sp/.github/actions/workflows/manage-org-admin.yml/badge.svg)](https://github.com/ssc-sp/.github/actions/workflows/manage-org-admin.yml) [![JIT Org Admin Cleanup](https://github.com/ssc-sp/.github/actions/workflows/manage-org-admin-cleanup.yml/badge.svg)](https://github.com/ssc-sp/.github/actions/workflows/manage-org-admin-cleanup.yml) [![Manage Inactive Members](https://github.com/ssc-sp/.github/actions/workflows/manage-org-members-cleanup.yml/badge.svg)](https://github.com/ssc-sp/.github/actions/workflows/manage-org-members-cleanup.yml) [![Update Member Public Activity](https://github.com/ssc-sp/.github/actions/workflows/manage-org-members-lastseen.yml/badge.svg)](https://github.com/ssc-sp/.github/actions/workflows/manage-org-members-lastseen.yml) |
