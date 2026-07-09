@@ -1,0 +1,18 @@
+{
+  "name": "datahub-portal-admin",
+  "description": "FSDH admins to the datahub-portal repo",
+  "privacy": "closed",
+  "notification_setting": "notifications_enabled",
+  "members": [
+    {
+      "username": "KingBain",
+      "role": "member"
+    }
+  ],
+  "repositories": [
+    {
+      "name": "datahub-portal",
+      "permissions": "admin"
+    }
+  ]
+}
