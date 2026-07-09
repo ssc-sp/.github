@@ -23,17 +23,17 @@
       "email": "john.bain@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-07-07T19:02:08Z",
-      "last_public_activity_event": "PushEvent",
-      "last_public_activity_repo": "ssc-sp/.github"
+      "last_public_activity_at": "2026-07-08T15:23:47Z",
+      "last_public_activity_event": "IssuesEvent",
+      "last_public_activity_repo": "ssc-sp/status-statut"
     },
     {
       "username": "ErikApption",
       "email": "erik.putrycz@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-07-06T16:59:04Z",
-      "last_public_activity_event": "DeleteEvent",
+      "last_public_activity_at": "2026-07-08T14:03:36Z",
+      "last_public_activity_event": "PushEvent",
       "last_public_activity_repo": "ssc-sp/datahub-portal"
     },
     {
@@ -77,8 +77,8 @@
       "email": "sean.stilwell@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-07-08T02:09:28Z",
-      "last_public_activity_event": "PushEvent",
+      "last_public_activity_at": "2026-07-08T14:22:21Z",
+      "last_public_activity_event": "DeleteEvent",
       "last_public_activity_repo": "ssc-sp/datahub-portal"
     },
     {
@@ -95,7 +95,7 @@
       "email": "Samuel.Cai@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-07-07T20:06:15Z",
+      "last_public_activity_at": "2026-07-08T18:12:28Z",
       "last_public_activity_event": "PushEvent",
       "last_public_activity_repo": "ssc-sp/fsdh-pfds-docs"
     },
@@ -104,8 +104,8 @@
       "email": "Paul.Marmet@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-06-02T12:04:34Z",
-      "last_public_activity_event": "PullRequestEvent",
+      "last_public_activity_at": "2026-07-08T19:45:43Z",
+      "last_public_activity_event": "PushEvent",
       "last_public_activity_repo": "ssc-sp/fsdh-pfds-docs"
     },
     {
