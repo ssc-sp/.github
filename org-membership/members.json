@@ -116,6 +116,15 @@
       "last_public_activity_at": "2026-06-17T12:37:44Z",
       "last_public_activity_event": "PullRequestReviewEvent",
       "last_public_activity_repo": "ssc-sp/guest-inviter-service"
+    },
+    {
+      "username": "ericyho",
+      "email": "eric.y.ho@ssc-spc.gc.ca",
+      "role": "direct_member",
+      "status": "active",
+      "last_public_activity_at": null,
+      "last_public_activity_event": null,
+      "last_public_activity_repo": null
     }
   ]
 }
