@@ -23,7 +23,7 @@
       "email": "john.bain@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-07-10T19:17:39Z",
+      "last_public_activity_at": "2026-07-13T16:40:47Z",
       "last_public_activity_event": "PushEvent",
       "last_public_activity_repo": "ssc-sp/datahub-portal"
     },
@@ -32,7 +32,7 @@
       "email": "erik.putrycz@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-07-10T19:27:37Z",
+      "last_public_activity_at": "2026-07-13T20:58:31Z",
       "last_public_activity_event": "PushEvent",
       "last_public_activity_repo": "ssc-sp/datahub-portal"
     },
@@ -50,9 +50,9 @@
       "email": "simon.wang@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-07-09T15:57:17Z",
-      "last_public_activity_event": "DeleteEvent",
-      "last_public_activity_repo": "ssc-sp/datahub-images"
+      "last_public_activity_at": "2026-07-13T13:11:46Z",
+      "last_public_activity_event": "PushEvent",
+      "last_public_activity_repo": "ssc-sp/datahub-resource-modules"
     },
     {
       "username": "deb-h576",
@@ -68,8 +68,8 @@
       "email": "Siovan.Gecelovsky@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-07-10T19:59:55Z",
-      "last_public_activity_event": "IssueCommentEvent",
+      "last_public_activity_at": "2026-07-13T19:27:46Z",
+      "last_public_activity_event": "PushEvent",
       "last_public_activity_repo": "ssc-sp/datahub-portal"
     },
     {
@@ -77,9 +77,9 @@
       "email": "sean.stilwell@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-07-10T19:12:05Z",
-      "last_public_activity_event": "CreateEvent",
-      "last_public_activity_repo": "ssc-sp/fsdh-pfds-docs"
+      "last_public_activity_at": "2026-07-13T17:44:27Z",
+      "last_public_activity_event": "PushEvent",
+      "last_public_activity_repo": "ssc-sp/datahub-portal"
     },
     {
       "username": "wendychee",
@@ -95,8 +95,8 @@
       "email": "Samuel.Cai@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-07-10T15:14:33Z",
-      "last_public_activity_event": "PullRequestEvent",
+      "last_public_activity_at": "2026-07-13T17:36:52Z",
+      "last_public_activity_event": "PushEvent",
       "last_public_activity_repo": "ssc-sp/fsdh-pfds-docs"
     },
     {
