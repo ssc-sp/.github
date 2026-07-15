@@ -32,8 +32,8 @@
       "email": "erik.putrycz@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-07-13T20:58:31Z",
-      "last_public_activity_event": "PushEvent",
+      "last_public_activity_at": "2026-07-14T21:43:47Z",
+      "last_public_activity_event": "CreateEvent",
       "last_public_activity_repo": "ssc-sp/datahub-portal"
     },
     {
@@ -50,9 +50,9 @@
       "email": "simon.wang@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-07-13T13:11:46Z",
-      "last_public_activity_event": "PushEvent",
-      "last_public_activity_repo": "ssc-sp/datahub-resource-modules"
+      "last_public_activity_at": "2026-07-14T19:50:00Z",
+      "last_public_activity_event": "PullRequestReviewEvent",
+      "last_public_activity_repo": "ssc-sp/datahub-images"
     },
     {
       "username": "deb-h576",
@@ -68,8 +68,8 @@
       "email": "Siovan.Gecelovsky@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-07-13T19:27:46Z",
-      "last_public_activity_event": "PushEvent",
+      "last_public_activity_at": "2026-07-14T14:50:53Z",
+      "last_public_activity_event": "PullRequestReviewEvent",
       "last_public_activity_repo": "ssc-sp/datahub-portal"
     },
     {
@@ -77,9 +77,9 @@
       "email": "sean.stilwell@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-07-13T17:44:27Z",
-      "last_public_activity_event": "PushEvent",
-      "last_public_activity_repo": "ssc-sp/datahub-portal"
+      "last_public_activity_at": "2026-07-14T18:32:41Z",
+      "last_public_activity_event": "PullRequestReviewCommentEvent",
+      "last_public_activity_repo": "ssc-sp/fsdh-pfds-docs"
     },
     {
       "username": "wendychee",
@@ -95,7 +95,7 @@
       "email": "Samuel.Cai@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-07-13T17:36:52Z",
+      "last_public_activity_at": "2026-07-14T19:11:00Z",
       "last_public_activity_event": "PushEvent",
       "last_public_activity_repo": "ssc-sp/fsdh-pfds-docs"
     },
