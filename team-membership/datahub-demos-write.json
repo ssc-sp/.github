@@ -1,0 +1,46 @@
+{
+  "name": "datahub-demos-write",
+  "description": "FSDH code contributors to the FSDH demo repos",
+  "privacy": "closed",
+  "notification_setting": "notifications_enabled",
+  "members": [
+    {
+      "username": "Sean-Stilwell",
+      "role": "member"
+    },
+    {
+      "username": "siovan-ssc",
+      "role": "member"
+    },
+    {
+      "username": "HamSamm",
+      "role": "member"
+    },
+    {
+      "username": "AstralOversight",
+      "role": "member"
+    }
+  ],
+  "repositories": [
+    {
+      "name": "datahub-demos",
+      "permissions": "push"
+    },
+    {
+      "name": "fsdh-demo-app-dash",
+      "permissions": "push"
+    },
+    {
+      "name": "fsdh-demo-app-django",
+      "permissions": "push"
+    },
+    {
+      "name": "fsdh-demo-app-flask",
+      "permissions": "push"
+    },
+    {
+      "name": "fsdh-demo-app-streamlit",
+      "permissions": "push"
+    }
+  ]
+}
