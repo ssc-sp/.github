@@ -23,9 +23,9 @@
       "email": "john.bain@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-08-21T14:10:26Z",
-      "last_public_activity_event": "PullRequestEvent",
-      "last_public_activity_repo": "ssc-sp/datahub-portal"
+      "last_public_activity_at": "2026-08-25T14:43:13Z",
+      "last_public_activity_event": "PushEvent",
+      "last_public_activity_repo": "ssc-sp/.github"
     },
     {
       "username": "ErikApption",
@@ -77,8 +77,8 @@
       "email": "sean.stilwell@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-08-24T18:14:52Z",
-      "last_public_activity_event": "IssueCommentEvent",
+      "last_public_activity_at": "2026-08-25T15:49:41Z",
+      "last_public_activity_event": "PushEvent",
       "last_public_activity_repo": "ssc-sp/datahub-portal"
     },
     {
@@ -95,9 +95,9 @@
       "email": "Samuel.Cai@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-08-13T13:24:03Z",
-      "last_public_activity_event": "IssuesEvent",
-      "last_public_activity_repo": "ssc-sp/fsdh-pfds-docs"
+      "last_public_activity_at": "2026-08-25T15:35:31Z",
+      "last_public_activity_event": "PushEvent",
+      "last_public_activity_repo": "ssc-sp/fsdh-demo-app-flask"
     },
     {
       "username": "AstralOversight",
