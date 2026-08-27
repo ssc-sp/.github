@@ -28,6 +28,14 @@
 
 ![Last Commit](https://img.shields.io/github/last-commit/ssc-sp/datahub-portal) ![Pull Requests](https://img.shields.io/github/issues-pr/ssc-sp/datahub-portal) ![Closed Pull Requests](https://img.shields.io/github/issues-pr-closed/ssc-sp/datahub-portal) [![Secret Scan](https://github.com/ssc-sp/datahub-portal/actions/workflows/secret-scanning.yml/badge.svg)](https://github.com/ssc-sp/datahub-portal/actions/workflows/secret-scanning.yml) [![CodeQL](https://github.com/ssc-sp/datahub-portal/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/ssc-sp/datahub-portal/actions/workflows/github-code-scanning/codeql)
 
+### ![guest-inviter-service](https://github.com/ssc-sp/guest-inviter-service)
+
+![GitHub stars](https://img.shields.io/github/stars/ssc-sp/guest-inviter-service?style=social)
+![GitHub forks](https://img.shields.io/github/forks/ssc-sp/guest-inviter-service?style=social)
+
+![Last Commit](https://img.shields.io/github/last-commit/ssc-sp/guest-inviter-service) ![Pull Requests](https://img.shields.io/github/issues-pr/ssc-sp/guest-inviter-service) ![Closed Pull Requests](https://img.shields.io/github/issues-pr-closed/ssc-sp/guest-inviter-service) [![Secret Scan](https://github.com/ssc-sp/guest-inviter-service/actions/workflows/secret-scanning.yml/badge.svg)](https://github.com/ssc-sp/guest-inviter-service/actions/workflows/secret-scanning.yml) [![CodeQL](https://github.com/ssc-sp/guest-inviter-service/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/ssc-sp/guest-inviter-service/actions/workflows/github-code-scanning/codeql)
+
+
 ### ![status-statut](https://github.com/ssc-sp/status-statut)
 
 ![GitHub stars](https://img.shields.io/github/stars/ssc-sp/status-statut?style=social)
