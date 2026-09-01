@@ -23,18 +23,18 @@
       "email": "john.bain@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-08-29T00:21:15Z",
+      "last_public_activity_at": "2026-09-01T01:32:48Z",
       "last_public_activity_event": "PullRequestReviewEvent",
-      "last_public_activity_repo": "ssc-sp/guest-inviter-service"
+      "last_public_activity_repo": "ssc-sp/datahub-images"
     },
     {
       "username": "ErikApption",
       "email": "erik.putrycz@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-08-29T01:55:11Z",
-      "last_public_activity_event": "PullRequestReviewEvent",
-      "last_public_activity_repo": "ssc-sp/datahub-portal"
+      "last_public_activity_at": "2026-08-31T17:38:41Z",
+      "last_public_activity_event": "PullRequestEvent",
+      "last_public_activity_repo": "ssc-sp/datahub-images"
     },
     {
       "username": "skaza999",
@@ -50,8 +50,8 @@
       "email": "simon.wang@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-08-21T20:05:05Z",
-      "last_public_activity_event": "PullRequestEvent",
+      "last_public_activity_at": "2026-08-31T17:56:16Z",
+      "last_public_activity_event": "PushEvent",
       "last_public_activity_repo": "ssc-sp/datahub-resource-modules"
     },
     {
@@ -77,9 +77,9 @@
       "email": "sean.stilwell@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-08-28T19:41:09Z",
+      "last_public_activity_at": "2026-08-31T18:48:31Z",
       "last_public_activity_event": "PullRequestReviewEvent",
-      "last_public_activity_repo": "ssc-sp/datahub-portal"
+      "last_public_activity_repo": "ssc-sp/.github"
     },
     {
       "username": "wendychee",
@@ -104,7 +104,7 @@
       "email": "Paul.Marmet@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-08-27T14:57:22Z",
+      "last_public_activity_at": "2026-08-31T15:58:29Z",
       "last_public_activity_event": "PushEvent",
       "last_public_activity_repo": "ssc-sp/fsdh-demo-app-django"
     },
