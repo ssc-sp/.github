@@ -91,24 +91,6 @@
       "last_public_activity_repo": null
     },
     {
-      "username": "HamSamm",
-      "email": "Samuel.Cai@ssc-spc.gc.ca",
-      "role": "direct_member",
-      "status": "active",
-      "last_public_activity_at": "2026-08-25T15:35:31Z",
-      "last_public_activity_event": "PushEvent",
-      "last_public_activity_repo": "ssc-sp/fsdh-demo-app-flask"
-    },
-    {
-      "username": "AstralOversight",
-      "email": "Paul.Marmet@ssc-spc.gc.ca",
-      "role": "direct_member",
-      "status": "active",
-      "last_public_activity_at": "2026-08-31T15:58:29Z",
-      "last_public_activity_event": "PushEvent",
-      "last_public_activity_repo": "ssc-sp/fsdh-demo-app-django"
-    },
-    {
       "username": "SSC-JDegouffe",
       "email": "julien.degouffe@ssc-spc.gc.ca",
       "role": "direct_member",
@@ -120,6 +102,15 @@
     {
       "username": "ericyho",
       "email": "eric.y.ho@ssc-spc.gc.ca",
+      "role": "direct_member",
+      "status": "active",
+      "last_public_activity_at": null,
+      "last_public_activity_event": null,
+      "last_public_activity_repo": null
+    },
+    {
+      "username": "AnojanSiva722",
+      "email": "Anojan.Sivaranjan@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
       "last_public_activity_at": null,
