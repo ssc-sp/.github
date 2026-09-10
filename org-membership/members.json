@@ -23,17 +23,17 @@
       "email": "john.bain@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-09-08T17:23:19Z",
-      "last_public_activity_event": "IssuesEvent",
-      "last_public_activity_repo": "ssc-sp/guest-inviter-service"
+      "last_public_activity_at": "2026-09-09T18:32:10Z",
+      "last_public_activity_event": "PushEvent",
+      "last_public_activity_repo": "ssc-sp/status-statut"
     },
     {
       "username": "ErikApption",
       "email": "erik.putrycz@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-09-09T00:25:30Z",
-      "last_public_activity_event": "PushEvent",
+      "last_public_activity_at": "2026-09-10T00:08:20Z",
+      "last_public_activity_event": "PullRequestEvent",
       "last_public_activity_repo": "ssc-sp/datahub-portal"
     },
     {
@@ -50,9 +50,9 @@
       "email": "simon.wang@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-09-04T18:57:38Z",
+      "last_public_activity_at": "2026-09-09T19:53:02Z",
       "last_public_activity_event": "DeleteEvent",
-      "last_public_activity_repo": "ssc-sp/datahub-portal"
+      "last_public_activity_repo": "ssc-sp/datahub-resource-modules"
     },
     {
       "username": "deb-h576",
@@ -68,18 +68,18 @@
       "email": "Siovan.Gecelovsky@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-09-03T15:26:52Z",
-      "last_public_activity_event": "PullRequestReviewEvent",
-      "last_public_activity_repo": "ssc-sp/fsdh-pfds-docs"
+      "last_public_activity_at": "2026-09-09T16:03:16Z",
+      "last_public_activity_event": "PullRequestEvent",
+      "last_public_activity_repo": "ssc-sp/datahub-portal"
     },
     {
       "username": "Sean-Stilwell",
       "email": "sean.stilwell@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-09-08T15:05:41Z",
-      "last_public_activity_event": "PullRequestReviewEvent",
-      "last_public_activity_repo": "ssc-sp/datahub-portal"
+      "last_public_activity_at": "2026-09-09T17:04:01Z",
+      "last_public_activity_event": "PushEvent",
+      "last_public_activity_repo": "ssc-sp/.github"
     },
     {
       "username": "wendychee",
