@@ -77,8 +77,8 @@
       "email": "sean.stilwell@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-09-15T15:13:30Z",
-      "last_public_activity_event": "CreateEvent",
+      "last_public_activity_at": "2026-09-17T15:27:05Z",
+      "last_public_activity_event": "PushEvent",
       "last_public_activity_repo": "ssc-sp/datahub-portal"
     },
     {
