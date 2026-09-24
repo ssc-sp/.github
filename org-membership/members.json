@@ -68,8 +68,8 @@
       "email": "Siovan.Gecelovsky@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-09-16T20:33:58Z",
-      "last_public_activity_event": "PushEvent",
+      "last_public_activity_at": "2026-09-23T18:43:18Z",
+      "last_public_activity_event": "PullRequestReviewEvent",
       "last_public_activity_repo": "ssc-sp/datahub-portal"
     },
     {
@@ -77,8 +77,8 @@
       "email": "sean.stilwell@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-09-22T12:27:36Z",
-      "last_public_activity_event": "PushEvent",
+      "last_public_activity_at": "2026-09-23T20:08:19Z",
+      "last_public_activity_event": "DeleteEvent",
       "last_public_activity_repo": "ssc-sp/datahub-portal"
     },
     {
