@@ -19,15 +19,6 @@
       "last_public_activity_repo": null
     },
     {
-      "username": "KingBain",
-      "email": "john.bain@ssc-spc.gc.ca",
-      "role": "direct_member",
-      "status": "active",
-      "last_public_activity_at": "2026-09-24T18:16:41Z",
-      "last_public_activity_event": "DeleteEvent",
-      "last_public_activity_repo": "ssc-sp/datahub-images"
-    },
-    {
       "username": "ErikApption",
       "email": "erik.putrycz@ssc-spc.gc.ca",
       "role": "direct_member",
@@ -35,15 +26,6 @@
       "last_public_activity_at": "2026-10-06T21:03:13Z",
       "last_public_activity_event": "PullRequestReviewEvent",
       "last_public_activity_repo": "ssc-sp/datahub-portal"
-    },
-    {
-      "username": "skaza999",
-      "email": "shiraz.kazarian@ssc-spc.gc.ca",
-      "role": "direct_member",
-      "status": "active",
-      "last_public_activity_at": "2026-07-29T14:53:41Z",
-      "last_public_activity_event": "PullRequestReviewEvent",
-      "last_public_activity_repo": "ssc-sp/.github"
     },
     {
       "username": "simon-wang-gc",
@@ -80,15 +62,6 @@
       "last_public_activity_at": "2026-10-07T19:38:32Z",
       "last_public_activity_event": "PullRequestReviewEvent",
       "last_public_activity_repo": "ssc-sp/datahub-resource-modules"
-    },
-    {
-      "username": "wendychee",
-      "email": "Wendy.Chee@ssc-spc.gc.ca",
-      "role": "direct_member",
-      "status": "inactive",
-      "last_public_activity_at": "2024-05-08T15:27:17Z",
-      "last_public_activity_event": null,
-      "last_public_activity_repo": null
     },
     {
       "username": "SSC-JDegouffe",
