@@ -1,0 +1,26 @@
+{
+  "name": "fsdh-pfds-crm-write",
+  "description": "FSDH Code Contributors to the fsdh-pfds-crm repo",
+  "privacy": "closed",
+  "notification_setting": "notifications_enabled",
+  "members": [
+    {
+      "username": "Sean-Stilwell",
+      "role": "member"
+    },
+    {
+      "username": "maevejoev",
+      "role": "member"
+    },
+    {
+      "username": "AnojanSiva722",
+      "role": "member"
+    }
+  ],
+  "repositories": [
+    {
+      "name": "fsdh-pfds-crm",
+      "permissions": "push"
+    }
+  ]
+}
