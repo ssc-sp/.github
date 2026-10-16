@@ -23,8 +23,8 @@
       "email": "erik.putrycz@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-10-14T18:02:56Z",
-      "last_public_activity_event": "PullRequestReviewEvent",
+      "last_public_activity_at": "2026-10-14T18:03:06Z",
+      "last_public_activity_event": "DeleteEvent",
       "last_public_activity_repo": "ssc-sp/.github"
     },
     {
@@ -32,8 +32,8 @@
       "email": "simon.wang@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-10-13T13:39:24Z",
-      "last_public_activity_event": "DeleteEvent",
+      "last_public_activity_at": "2026-10-15T15:56:32Z",
+      "last_public_activity_event": "PullRequestEvent",
       "last_public_activity_repo": "ssc-sp/datahub-resource-modules"
     },
     {
@@ -95,9 +95,9 @@
       "email": "Anojan.Sivaranjan@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": null,
-      "last_public_activity_event": null,
-      "last_public_activity_repo": null
+      "last_public_activity_at": "2026-10-14T15:54:57Z",
+      "last_public_activity_event": "CreateEvent",
+      "last_public_activity_repo": "ssc-sp/fsdh-pfds-crm"
     },
     {
       "username": "gcnabeel",
