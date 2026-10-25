@@ -23,8 +23,8 @@
       "email": "erik.putrycz@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-10-24T02:19:49Z",
-      "last_public_activity_event": "PullRequestReviewEvent",
+      "last_public_activity_at": "2026-10-24T02:42:28Z",
+      "last_public_activity_event": "PushEvent",
       "last_public_activity_repo": "ssc-sp/datahub-portal"
     },
     {
