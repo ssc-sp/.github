@@ -1,0 +1,18 @@
+{
+  "name": "datahub-images-read",
+  "description": "FSDH Code Contributors to the datahub images repo",
+  "privacy": "closed",
+  "notification_setting": "notifications_enabled",
+  "members": [
+    {
+      "username": "KingBain",
+      "role": "member"
+    }
+  ],
+  "repositories": [
+    {
+      "name": "datahub-images",
+      "permissions": "pull"
+    }
+  ]
+}

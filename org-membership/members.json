@@ -107,6 +107,15 @@
       "last_public_activity_at": null,
       "last_public_activity_event": null,
       "last_public_activity_repo": null
+    },
+    {
+      "username": "KingBain",
+      "email": "john.bain@ssc-spc.gc.ca",
+      "role": "direct_member",
+      "status": "active",
+      "last_public_activity_at": null,
+      "last_public_activity_event": null,
+      "last_public_activity_repo": null
     }
   ]
 }
