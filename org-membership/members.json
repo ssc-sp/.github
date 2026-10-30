@@ -32,9 +32,9 @@
       "email": "simon.wang@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-10-28T17:16:39Z",
+      "last_public_activity_at": "2026-10-29T19:21:18Z",
       "last_public_activity_event": "PullRequestEvent",
-      "last_public_activity_repo": "ssc-sp/datahub-resource-modules"
+      "last_public_activity_repo": "ssc-sp/datahub-images"
     },
     {
       "username": "deb-h576",
@@ -59,8 +59,8 @@
       "email": "sean.stilwell@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-10-28T17:16:33Z",
-      "last_public_activity_event": "PullRequestReviewEvent",
+      "last_public_activity_at": "2026-10-28T17:16:42Z",
+      "last_public_activity_event": "DeleteEvent",
       "last_public_activity_repo": "ssc-sp/datahub-resource-modules"
     },
     {
