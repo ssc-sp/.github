@@ -32,7 +32,7 @@
       "email": "simon.wang@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-10-29T19:21:18Z",
+      "last_public_activity_at": "2026-10-30T18:02:22Z",
       "last_public_activity_event": "PullRequestEvent",
       "last_public_activity_repo": "ssc-sp/datahub-images"
     },
@@ -59,9 +59,9 @@
       "email": "sean.stilwell@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-10-28T17:16:42Z",
-      "last_public_activity_event": "DeleteEvent",
-      "last_public_activity_repo": "ssc-sp/datahub-resource-modules"
+      "last_public_activity_at": "2026-10-30T18:43:06Z",
+      "last_public_activity_event": "PullRequestEvent",
+      "last_public_activity_repo": "ssc-sp/datahub-portal"
     },
     {
       "username": "SSC-JDegouffe",
@@ -113,9 +113,9 @@
       "email": "john.bain@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-10-27T17:48:55Z",
-      "last_public_activity_event": "IssueCommentEvent",
-      "last_public_activity_repo": "ssc-sp/.github"
+      "last_public_activity_at": "2026-10-30T19:04:21Z",
+      "last_public_activity_event": "PullRequestReviewEvent",
+      "last_public_activity_repo": "ssc-sp/datahub-images"
     }
   ]
 }
