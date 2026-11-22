@@ -32,8 +32,8 @@
       "email": "simon.wang@ssc-spc.gc.ca",
       "role": "direct_member",
       "status": "active",
-      "last_public_activity_at": "2026-11-19T18:26:53Z",
-      "last_public_activity_event": "PushEvent",
+      "last_public_activity_at": "2026-11-19T18:26:55Z",
+      "last_public_activity_event": "DeleteEvent",
       "last_public_activity_repo": "ssc-sp/datahub-resource-modules"
     },
     {
